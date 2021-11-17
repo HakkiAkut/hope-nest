@@ -1,0 +1,1 @@
+enum WebService { FIREBASE, DEBUG }
