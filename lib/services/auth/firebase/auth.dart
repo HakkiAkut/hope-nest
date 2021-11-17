@@ -15,7 +15,7 @@ class AuthService implements AuthMethods {
 
   /// Firebase sign out
   @override
-  Future<bool> signOut() async {
+  Future<bool?> signOut() async {
     await _auth.signOut().onError((error, stackTrace) => false);
     return true;
   }
@@ -26,7 +26,7 @@ class AuthService implements AuthMethods {
   }
 
   @override
-  Future<AppUser> signInWithPhoneNumber({required String phone}) async{
+  Future<AppUser?> signInWithPhoneNumber({required String phone}) async{
     return await AppUser(uid: "123");
   }
 }
