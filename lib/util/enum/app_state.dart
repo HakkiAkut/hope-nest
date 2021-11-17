@@ -1,0 +1,1 @@
+enum AppState { IDLE, BUSY }
