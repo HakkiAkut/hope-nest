@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hope_nest/util/constants/palette.dart';
 import 'package:hope_nest/util/init/route_genenrator.dart';
+import 'package:hope_nest/util/init/service_locator.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/views/root.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
+  initializeLocator();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
