@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hope_nest/views/profile/profile_page.dart';
 
 class RouteGenerator {
   static Route<dynamic> initializeRoute(RouteSettings settings) {
@@ -10,6 +11,10 @@ class RouteGenerator {
           builder: (_) => Container(),
         );
 
+      case '/Profile':
+        return MaterialPageRoute(
+          builder: (_) => ProfilePage(),
+        );
       default:
         return _errorRoute();
     }
