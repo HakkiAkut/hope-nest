@@ -18,7 +18,7 @@ class Repository implements AuthMethods {
       AppUser? appUser = await _auth.currentUser();
       if (appUser != null) {
         // TODO get current user from firestore
-        return await AppUser(uid: "uid");
+        return await appUser;
       } else {
         return null;
       }

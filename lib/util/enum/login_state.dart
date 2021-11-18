@@ -1,1 +1,1 @@
-enum LoginState { signIn, signUp };
+enum LoginState { SIGNIN, SIGNUP }
