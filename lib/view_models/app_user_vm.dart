@@ -39,6 +39,31 @@ class AppUserVM with ChangeNotifier implements AuthMethods {
     }
   }
 
+  @override
+  Future<AppUser?> signInWithEmail(
+      {required String email, required String pwd}) async {
+    try {
+      state = AppState.BUSY;
+      _appUser = await _repository.signInWithEmail(email: email, pwd: pwd);
+      return _appUser;
+    } finally {
+      state = AppState.IDLE;
+    }
+  }
+
+  @override
+  Future<AppUser?> signUpWithEmail({
+    required String email,
+    required String pwd,
+  }) async {
+    try {
+      state = AppState.BUSY;
+      _appUser = await _repository.signUpWithEmail(email: email, pwd: pwd);
+      return _appUser;
+    } finally {
+      state = AppState.IDLE;
+    }
+  }
 
   @override
   Future<bool?> signOut() async {
@@ -46,18 +71,6 @@ class AppUserVM with ChangeNotifier implements AuthMethods {
       state = AppState.BUSY;
       _appUser = null;
       return await _repository.signOut();
-    } finally {
-      state = AppState.IDLE;
-    }
-  }
-
-
-  @override
-  Future<AppUser?> signInWithPhoneNumber({required String phone}) async {
-    try {
-      state = AppState.BUSY;
-      _appUser = await _repository.signInWithPhoneNumber(phone: phone);
-      return _appUser;
     } finally {
       state = AppState.IDLE;
     }

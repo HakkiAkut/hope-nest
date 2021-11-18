@@ -21,12 +21,24 @@ class AuthService implements AuthMethods {
   }
 
   /// converts Firebase user to Application User
-  AppUser convertUserToAppUser(User user) {
-    return AppUser(uid: user.uid, email: user.phoneNumber);
+  AppUser convertUserToAppUser(User? user) {
+    return AppUser(uid: user!.uid, email: user!.email);
   }
 
+
   @override
-  Future<AppUser?> signInWithPhoneNumber({required String phone}) async{
-    return await AppUser(uid: "123");
+  Future<AppUser?> signUpWithEmail({required String email, required String pwd}) async {
+    UserCredential credential =
+    await _auth.createUserWithEmailAndPassword(email: email, password: pwd);
+    return convertUserToAppUser(credential.user);
   }
+
+  /// Firebase authentication with email and password
+  @override
+  Future<AppUser?> signInWithEmail({required String email, required String pwd}) async {
+    UserCredential credential =
+    await _auth.signInWithEmailAndPassword(email: email, password: pwd);
+    return convertUserToAppUser(credential.user);
+  }
+
 }
