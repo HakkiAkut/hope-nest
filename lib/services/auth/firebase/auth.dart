@@ -22,6 +22,7 @@ class AuthService implements AuthMethods {
 
   /// converts Firebase user to Application User
   AppUser convertUserToAppUser(User? user) {
+    // TODO firestore connection
     return AppUser(uid: user!.uid, email: user!.email);
   }
 

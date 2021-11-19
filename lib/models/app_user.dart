@@ -7,6 +7,7 @@ class AppUser {
   String? phone;
   String? email;
   String? image;
+  String? location;
   Timestamp? registrationDate;
 
   AppUser(
@@ -16,6 +17,7 @@ class AppUser {
       this.phone,
       this.email,
       this.image,
+      this.location,
       this.registrationDate});
 
   Map<String, dynamic> toMap() {
@@ -26,6 +28,7 @@ class AppUser {
       "phone": phone,
       "email": email,
       "image": image,
+      "location": location,
       "registration_date": registrationDate ?? FieldValue.serverTimestamp(),
     };
   }
@@ -38,6 +41,7 @@ class AppUser {
       phone: map['phone'] as String,
       email: map['email'] as String,
       image: map['image'] as String,
+      location: map['location'] as String,
       registrationDate: map['registration_date'] as Timestamp,
     );
   }

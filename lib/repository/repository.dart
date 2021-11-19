@@ -1,4 +1,7 @@
 import 'package:hope_nest/models/app_user.dart';
+import 'package:hope_nest/services/database/base/user_db_base.dart';
+import 'package:hope_nest/services/database/firebase/database_service.dart';
+import 'package:hope_nest/util/enum/database_service.dart';
 import 'package:hope_nest/util/init/service_locator.dart';
 import 'package:hope_nest/util/enum/web_service.dart';
 import 'package:hope_nest/services/auth/base/auth_base.dart';
@@ -8,9 +11,11 @@ import 'package:hope_nest/services/auth/firebase/auth.dart';
 /// If WebService is FIREBASE then it will work with firebase methods
 /// otherwise if there is another service it will work with other one.
 /// Works like DAO manager basically.
-class Repository implements AuthMethods {
+class Repository implements AuthMethods, UserMethods {
   final AuthService _auth = serviceLocator<AuthService>();
+  final UserDatabaseService _firestore = serviceLocator<UserDatabaseService>();
   final WebService webService = WebService.FIREBASE;
+  final DBService dbService = DBService.FIRESTORE;
 
   @override
   Future<AppUser?> currentUser() async {
@@ -41,7 +46,7 @@ class Repository implements AuthMethods {
     if (webService == WebService.FIREBASE) {
       AppUser? appUser = await _auth.signUpWithEmail(email: email, pwd: pwd);
       if (appUser != null) {
-        // TODO firestore set user
+        await setUser(appUser: appUser);
         return await currentUser();
       }
     }
@@ -60,5 +65,17 @@ class Repository implements AuthMethods {
     return null;
   }
 
+  @override
+  Future<AppUser?> getUser({required String id}) {
+    // TODO: implement getUser
+    throw UnimplementedError();
+  }
 
+  @override
+  Future<bool?> setUser({required AppUser appUser}) async {
+    if (dbService == DBService.FIRESTORE) {
+      return await _firestore.setUser(appUser: appUser);
+    }
+    return null;
+  }
 }
