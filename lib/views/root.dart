@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
-import 'package:hope_nest/views/home_page/home_page.dart';
+import 'package:hope_nest/views/home_page/home_root_page.dart';
 import 'package:hope_nest/views/login/login_page.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +14,7 @@ class RootPage extends StatelessWidget {
     final _appUserVM = Provider.of<AppUserVM>(context);
     if (_appUserVM.state == AppState.IDLE) {
       return _appUserVM.appUser != null
-          ? const HomePage() : const LoginPage();
+          ? const HomeRootPage() : const LoginPage();
     } else {
       return const Scaffold(
         body: Center(
