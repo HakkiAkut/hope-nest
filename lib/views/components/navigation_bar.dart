@@ -4,29 +4,29 @@ import 'package:hope_nest/util/enum/tabs.dart';
 import 'package:hope_nest/views/components/tab_item.dart';
 
 class NavigationBar extends StatelessWidget {
-  const NavigationBar({Key? key, required this.current, required this.selected})
-      : super(key: key);
-
-  final Tabs current;
-  final ValueChanged<Tabs> selected;
+  const NavigationBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        iconSize: 0,
-        items: [
-          tabItem(tab: Tabs.home),
-          tabItem(tab: Tabs.posts),
-          tabItem(tab: Tabs.messages)
-        ],
-        onTap: (index)=> selected(Tabs.values[index]),
+    return const TabBar(
+      indicatorColor: Colors.blue,
+      unselectedLabelColor: Colors.grey,
+      labelColor: Colors.blue,
+      indicator: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+        color: Colors.green,
       ),
-      tabBuilder: (BuildContext context, int index) {
-        return CupertinoTabView(
-          builder: (context)=> Container(child: Text("child"),),
-        );
-      },
+      tabs: [
+        Tab(
+          text: "Home",
+        ),
+        Tab(
+          text: "Blog",
+        ),
+        Tab(
+          text: "Message",
+        ),
+      ],
     );
   }
 }

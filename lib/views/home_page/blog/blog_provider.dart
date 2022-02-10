@@ -6,6 +6,6 @@ class BlogProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO Blog's Provider and View Page
-    return Container(child: Text("Messages"),);
+    return Container(child: Text("BlogProvider"),);
   }
 }

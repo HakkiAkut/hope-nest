@@ -5,20 +5,17 @@ import 'package:hope_nest/services/auth/base/auth_base.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
 import 'package:hope_nest/util/enum/login_state.dart';
-import 'package:hope_nest/util/enum/tabs.dart';
 import 'package:hope_nest/util/init/service_locator.dart';
 
 class AppUserVM with ChangeNotifier implements AuthMethods, UserMethods {
   AppState _state = AppState.IDLE;
   LoginState _loginState = LoginState.SIGNIN;
-  Tabs _currentTab = Tabs.home;
 
   final Repository _repository = serviceLocator<Repository>();
   AppUser? _appUser;
 
   AppUser? get appUser => _appUser;
   AppState get state => _state;
-  Tabs get currentTab => _currentTab;
   LoginState get loginState => _loginState;
 
   AppUserVM() {
@@ -32,10 +29,6 @@ class AppUserVM with ChangeNotifier implements AuthMethods, UserMethods {
 
   set loginState(LoginState value) {
     _loginState = value;
-    notifyListeners();
-  }
-  set currentTab(Tabs value) {
-    _currentTab = value;
     notifyListeners();
   }
 

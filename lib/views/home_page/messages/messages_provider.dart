@@ -5,7 +5,7 @@ class MessagesProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO Messages's Provider and View Page
+    // TODO Message's Provider and View Page
     return Scaffold(
       body: Container(child: Text("Messages"),),
     );
