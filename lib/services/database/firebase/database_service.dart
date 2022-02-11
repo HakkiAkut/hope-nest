@@ -8,9 +8,17 @@ class UserDatabaseService implements UserMethods, AdvertMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<AppUser?> getUser({required String id}) {
-    // TODO: implement getUser
-    throw UnimplementedError();
+  Future<AppUser?> getUser({required String id}) async {
+    try {
+      DocumentSnapshot user =
+          await _firestore.collection("users").doc(id).get();
+      Map<String, dynamic> userData = user.data() as Map<String, dynamic>;
+      AppUser newUser = AppUser.fromMap(userData!);
+      return newUser;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 
   @override
@@ -34,7 +42,6 @@ class UserDatabaseService implements UserMethods, AdvertMethods {
         .orderBy('date', descending: true)
         .limit(10)
         .snapshots();
-
     return qp.map((docs) => docs.docs
         .map((doc) => Advert.fromMap(doc.data() as Map<String, dynamic>))
         .toList());
