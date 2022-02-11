@@ -1,17 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Advert {
   String id;
   String uid;
+  Timestamp date;
   String? description;
   String? name;
-  String? age;
+  int? age;
   String? kind;
   String? race;
-  String? weight;
+  double? weight;
   List<String>? vaccines;
 
   Advert(
       {required this.id,
       required this.uid,
+      required this.date,
       this.description,
       this.name,
       this.age,
@@ -24,6 +28,7 @@ class Advert {
     return {
       "id": id,
       "userId": uid,
+      "date": date,
       "description": description,
       "name": name,
       "age": age,
@@ -38,12 +43,13 @@ class Advert {
     return Advert(
       id: map['id'] as String,
       uid: map['userId'] as String,
+      date: map['date'] as Timestamp,
       description: map['description'] as String,
       name: map['name'] as String,
-      age: map['age'] as String,
+      age: map['age'] as int,
       kind: map['kind'] as String,
       race: map['race'] as String,
-      weight: map['weight'] as String,
+      weight: map['weight'] as double,
       vaccines: map['vaccines'] as List<String>,
     );
   }
