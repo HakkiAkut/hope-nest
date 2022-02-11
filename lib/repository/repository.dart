@@ -24,8 +24,7 @@ class Repository implements AuthMethods, UserMethods, AdvertMethods {
     if (webService == WebService.FIREBASE) {
       AppUser? appUser = await _auth.currentUser();
       if (appUser != null) {
-        // TODO get current user from firestore
-        return await appUser;
+        return await _firestore.getUser(id: appUser.uid);
       } else {
         return null;
       }
@@ -68,9 +67,11 @@ class Repository implements AuthMethods, UserMethods, AdvertMethods {
   }
 
   @override
-  Future<AppUser?> getUser({required String id}) {
-    // TODO: implement getUser
-    throw UnimplementedError();
+  Future<AppUser?> getUser({required String id}) async {
+    if (dbService == DBService.FIRESTORE) {
+      return await _firestore.getUser(id: id);
+    }
+    return null;
   }
 
   @override
