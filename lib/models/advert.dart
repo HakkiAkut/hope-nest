@@ -11,20 +11,21 @@ class Advert {
   String? kind;
   String? race;
   double? weight;
-  List<String>? vaccines;
+  //List<String>? vaccines;
 
-  Advert(
-      {required this.id,
-      required this.uid,
-      required this.date,
-      required this.url,
-      this.description,
-      this.name,
-      this.age,
-      this.kind,
-      this.race,
-      this.weight,
-      this.vaccines});
+  Advert({
+    required this.id,
+    required this.uid,
+    required this.date,
+    required this.url,
+    this.description,
+    this.name,
+    this.age,
+    this.kind,
+    this.race,
+    this.weight,
+    //this.vaccines
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -38,7 +39,7 @@ class Advert {
       "kind": kind,
       "race": race,
       "weight": weight,
-      "vaccines": vaccines,
+      //"vaccines": vaccines,
     };
   }
 
@@ -54,7 +55,7 @@ class Advert {
       kind: map['kind'] as String,
       race: map['race'] as String,
       weight: map['weight'] as double,
-      vaccines: map['vaccines'] as List<String>,
+      //vaccines: map['vaccines'] as List<String>,
     );
   }
 }
