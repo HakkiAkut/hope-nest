@@ -4,6 +4,7 @@ class Advert {
   String id;
   String uid;
   Timestamp date;
+  String url;
   String? description;
   String? name;
   int? age;
@@ -16,6 +17,7 @@ class Advert {
       {required this.id,
       required this.uid,
       required this.date,
+      required this.url,
       this.description,
       this.name,
       this.age,
@@ -29,6 +31,7 @@ class Advert {
       "id": id,
       "userId": uid,
       "date": date,
+      "url": url,
       "description": description,
       "name": name,
       "age": age,
@@ -44,6 +47,7 @@ class Advert {
       id: map['id'] as String,
       uid: map['userId'] as String,
       date: map['date'] as Timestamp,
+      url: map['url'] as String,
       description: map['description'] as String,
       name: map['name'] as String,
       age: map['age'] as int,
