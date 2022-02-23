@@ -23,7 +23,7 @@ class Post {
       "date": date,
       "url": url,
       "description": description,
-      "name": title,
+      "title": title,
     };
   }
 

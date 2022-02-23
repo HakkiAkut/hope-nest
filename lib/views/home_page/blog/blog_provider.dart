@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hope_nest/models/post.dart';
+import 'package:hope_nest/view_models/blog_vm.dart';
+import 'package:hope_nest/views/home_page/blog/blog_view.dart';
+import 'package:provider/provider.dart';
 
 class BlogProvider extends StatelessWidget {
   const BlogProvider({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // TODO Blog's Provider and View Page
-    return Container(child: Text("BlogProvider"),);
+    return StreamProvider<List<Post>>.value(
+      value: BlogVM().getPosts(),
+      initialData: const [],
+      child: const BlogView(),
+      updateShouldNotify: (prev, now) => true,
+    );
+
   }
 }
