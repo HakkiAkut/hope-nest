@@ -1,6 +1,8 @@
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
+import 'package:hope_nest/models/post.dart';
 import 'package:hope_nest/services/database/base/advert_db_base.dart';
+import 'package:hope_nest/services/database/base/blog_db_base.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
 import 'package:hope_nest/services/database/firebase/database_service.dart';
 import 'package:hope_nest/util/enum/database_service.dart';
@@ -13,7 +15,8 @@ import 'package:hope_nest/services/auth/firebase/auth.dart';
 /// If WebService is FIREBASE then it will work with firebase methods
 /// otherwise if there is another service it will work with other one.
 /// Works like DAO manager basically.
-class Repository implements AuthMethods, UserMethods, AdvertMethods {
+class Repository
+    implements AuthMethods, UserMethods, AdvertMethods, BlogMethods {
   final AuthService _auth = serviceLocator<AuthService>();
   final UserDatabaseService _firestore = serviceLocator<UserDatabaseService>();
   final WebService webService = WebService.FIREBASE;
@@ -86,6 +89,14 @@ class Repository implements AuthMethods, UserMethods, AdvertMethods {
   Stream<List<Advert>>? getAdverts() {
     if (dbService == DBService.FIRESTORE) {
       return _firestore.getAdverts();
+    }
+    return null;
+  }
+
+  @override
+  Stream<List<Post>>? getPosts() {
+    if (dbService == DBService.FIRESTORE) {
+      return _firestore.getPosts();
     }
     return null;
   }
