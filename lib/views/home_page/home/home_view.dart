@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/advert.dart';
+import 'package:hope_nest/util/constants/navigation_constants.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -25,7 +26,13 @@ class _HomeViewPageState extends State<HomeViewPage> {
         crossAxisSpacing: 4.0,
         children: _advertsVM
             .map<Widget>((advert) => StaggeredGridTile.fit(
-                crossAxisCellCount: 1, child: Image.network("${advert.url}")))
+                crossAxisCellCount: 1,
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, NavigationConstants.ADVERT,
+                          arguments: advert);
+                    },
+                    child: Image.network("${advert.url}"))))
             .toList(),
       ),
     ));
