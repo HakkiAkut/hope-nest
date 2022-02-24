@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hope_nest/models/advert.dart';
+import 'package:hope_nest/util/constants/navigation_constants.dart';
+import 'package:hope_nest/views/advert_page/advert_view.dart';
 import 'package:hope_nest/views/profile/profile_page.dart';
 
 class RouteGenerator {
@@ -6,15 +9,25 @@ class RouteGenerator {
     final args = settings.arguments;
 
     switch (settings.name) {
-      case '/HomePage':
+      case NavigationConstants.HOME_PAGE:
         return MaterialPageRoute(
           builder: (_) => Container(),
         );
 
-      case '/Profile':
+      case NavigationConstants.PROFILE:
         return MaterialPageRoute(
           builder: (_) => ProfilePage(),
         );
+
+      case NavigationConstants.ADVERT:
+        if (args is Advert) {
+          return MaterialPageRoute(
+            builder: (_) => AdvertView(
+              advert: args,
+            ),
+          );
+        }
+        return _errorRoute();
       default:
         return _errorRoute();
     }
