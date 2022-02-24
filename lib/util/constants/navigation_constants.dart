@@ -3,4 +3,5 @@ class NavigationConstants {
   static const ROOT = "/RootPage";
   static const PROFILE = "/Profile";
   static const ADVERT = "/Advert";
+  static const POST_PAGE ="/PostPage";
 }
