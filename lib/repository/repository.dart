@@ -1,8 +1,10 @@
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
+import 'package:hope_nest/models/comment.dart';
 import 'package:hope_nest/models/post.dart';
 import 'package:hope_nest/services/database/base/advert_db_base.dart';
 import 'package:hope_nest/services/database/base/blog_db_base.dart';
+import 'package:hope_nest/services/database/base/comments_db_base.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
 import 'package:hope_nest/services/database/firebase/database_service.dart';
 import 'package:hope_nest/util/enum/database_service.dart';
@@ -16,7 +18,12 @@ import 'package:hope_nest/services/auth/firebase/auth.dart';
 /// otherwise if there is another service it will work with other one.
 /// Works like DAO manager basically.
 class Repository
-    implements AuthMethods, UserMethods, AdvertMethods, BlogMethods {
+    implements
+        AuthMethods,
+        UserMethods,
+        AdvertMethods,
+        BlogMethods,
+        CommentMethods {
   final AuthService _auth = serviceLocator<AuthService>();
   final UserDatabaseService _firestore = serviceLocator<UserDatabaseService>();
   final WebService webService = WebService.FIREBASE;
@@ -94,9 +101,20 @@ class Repository
   }
 
   @override
+  Future<List<Comment>>? getC() {}
+
+  @override
   Stream<List<Post>>? getPosts() {
     if (dbService == DBService.FIRESTORE) {
       return _firestore.getPosts();
+    }
+    return null;
+  }
+
+  @override
+  Future<List<Comment>?>? getCommentByPID({required String pid}) async {
+    if (dbService == DBService.FIRESTORE) {
+      return await _firestore.getCommentByPID(pid: pid);
     }
     return null;
   }
