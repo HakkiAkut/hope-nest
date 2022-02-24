@@ -106,13 +106,13 @@ class AppUserVM
     }
   }
 
-  void getOwner(String id) async {
+  void getOwner({required String id}) async {
     if (_advertOwner == null || _advertOwner!.uid != id) {
       _advertOwner = await getUser(id: id);
     }
   }
 
-  void getComment(String pid) async {
+  void getComment({required String pid}) async {
     if (_comments == null || _comments!.first.pid != pid) {
       _comments = await getCommentByPID(pid: pid);
     }
