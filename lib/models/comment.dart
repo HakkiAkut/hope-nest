@@ -19,7 +19,7 @@ class Comment {
       "id": id,
       "userId": uid,
       "postId": pid,
-      "description": text,
+      "text": text,
       "date": date,
     };
   }
