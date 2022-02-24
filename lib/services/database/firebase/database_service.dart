@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
+import 'package:hope_nest/models/comment.dart';
 import 'package:hope_nest/models/post.dart';
 import 'package:hope_nest/services/database/base/advert_db_base.dart';
 import 'package:hope_nest/services/database/base/blog_db_base.dart';
+import 'package:hope_nest/services/database/base/comments_db_base.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
 
-class UserDatabaseService implements UserMethods, AdvertMethods, BlogMethods {
+class UserDatabaseService
+    implements UserMethods, AdvertMethods, BlogMethods, CommentMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
@@ -59,5 +62,18 @@ class UserDatabaseService implements UserMethods, AdvertMethods, BlogMethods {
     return qp.map((docs) => docs.docs
         .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
         .toList());
+  }
+
+  @override
+  Future<List<Comment>?>? getCommentByPID({required String pid}) async {
+    QuerySnapshot qp = await _firestore
+        .collection('comments')
+        .where('postId', isEqualTo: pid)
+        .orderBy('date', descending: true)
+        .get();
+
+    return qp.docs
+        .map((doc) => Comment.fromMap(doc.data() as Map<String, dynamic>))
+        .toList();
   }
 }
