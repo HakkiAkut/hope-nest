@@ -17,7 +17,7 @@ class _AdvertViewState extends State<AdvertView> {
   @override
   Widget build(BuildContext context) {
     final _appUserVM = Provider.of<AppUserVM>(context);
-    _appUserVM.getOwner(widget.advert.uid);
+    _appUserVM.getOwner(id: widget.advert.uid);
 
     return Scaffold(
       appBar: AppBar(
