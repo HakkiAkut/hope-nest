@@ -13,8 +13,10 @@ class AppUserVM with ChangeNotifier implements AuthMethods, UserMethods {
 
   final Repository _repository = serviceLocator<Repository>();
   AppUser? _appUser;
+  AppUser? _advertOwner;
 
   AppUser? get appUser => _appUser;
+  AppUser? get advertOwner => _advertOwner;
   AppState get state => _state;
   LoginState get loginState => _loginState;
 
@@ -85,9 +87,22 @@ class AppUserVM with ChangeNotifier implements AuthMethods, UserMethods {
   }
 
   @override
-  Future<AppUser?> getUser({required String id}) {
-    // TODO: implement getUser
-    throw UnimplementedError();
+  Future<AppUser?> getUser({required String id}) async {
+    try {
+      state = AppState.BUSY;
+      return await _repository.getUser(id: id);
+    } finally {
+      state = AppState.IDLE;
+    }
+  }
+
+  void getOwner(String id) async {
+    print("get owner start");
+    if(_advertOwner == null || _advertOwner!.uid != id){
+      _advertOwner = await getUser(id: id);
+    }
+    print("get owner end");
+    print(_advertOwner!.uid);
   }
 
   @override
