@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hope_nest/util/enum/tabs.dart';
-import 'package:hope_nest/views/components/tab_item.dart';
 
 class NavigationBar extends StatelessWidget {
   const NavigationBar({Key? key}) : super(key: key);

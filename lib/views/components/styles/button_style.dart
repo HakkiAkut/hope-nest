@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hope_nest/util/constants/palette.dart';
-import 'package:hope_nest/views/components/text_style.dart';
+import 'package:hope_nest/views/components/styles/text_style.dart';
 
 final buttonStyle = ButtonStyle(
   shape: MaterialStateProperty.all<OutlinedBorder>(const RoundedRectangleBorder(
