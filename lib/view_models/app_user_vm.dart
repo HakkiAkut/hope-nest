@@ -18,11 +18,14 @@ class AppUserVM
   final Repository _repository = serviceLocator<Repository>();
   AppUser? _appUser;
   AppUser? _advertOwner;
+  AppUser? _postOwner;
   List<Comment>? _comments;
 
   AppUser? get appUser => _appUser;
 
   AppUser? get advertOwner => _advertOwner;
+
+  AppUser? get postOwner => _postOwner;
 
   List<Comment>? get comments => _comments;
 
@@ -106,14 +109,21 @@ class AppUserVM
     }
   }
 
-  void getOwner({required String id}) async {
+  void getAdvertOwner({required String id}) async {
     if (_advertOwner == null || _advertOwner!.uid != id) {
       _advertOwner = await getUser(id: id);
     }
   }
 
-  void getComment({required String pid}) async {
+  void getPostOwner({required String id}) async {
+    if (_postOwner == null || _postOwner!.uid != id) {
+      _postOwner = await getUser(id: id);
+    }
+  }
+
+  void getCommentAndOwner({required String pid, required String uid}) async {
     if (_comments == null || _comments!.first.pid != pid) {
+      getPostOwner(id: uid);
       _comments = await getCommentByPID(pid: pid);
     }
   }
