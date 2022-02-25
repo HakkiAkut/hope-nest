@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hope_nest/util/enum/tabs.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
-import 'package:hope_nest/views/components/navigation_bar.dart';
+import 'package:hope_nest/views/components/navigation_bar/navigation_bar.dart';
 import 'package:hope_nest/views/home_page/blog/blog_provider.dart';
 import 'package:hope_nest/views/home_page/home/home_provider.dart';
 import 'package:hope_nest/views/home_page/messages/messages_provider.dart';

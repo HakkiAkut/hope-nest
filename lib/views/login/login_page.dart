@@ -3,9 +3,9 @@ import 'package:hope_nest/util/constants/palette.dart';
 import 'package:hope_nest/util/enum/login_state.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
-import 'package:hope_nest/views/components/button_style.dart';
-import 'package:hope_nest/views/components/input_style.dart';
-import 'package:hope_nest/views/components/text_style.dart';
+import 'package:hope_nest/views/components/styles/button_style.dart';
+import 'package:hope_nest/views/components/styles/input_style.dart';
+import 'package:hope_nest/views/components/styles/text_style.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
