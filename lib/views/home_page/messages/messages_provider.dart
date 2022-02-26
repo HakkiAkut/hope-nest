@@ -7,6 +7,7 @@ class MessagesProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO Message's Provider and View Page
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Container(child: Text("Messages"),),
     );
   }

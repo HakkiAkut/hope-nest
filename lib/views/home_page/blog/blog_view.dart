@@ -15,6 +15,7 @@ class _BlogViewState extends State<BlogView> {
   Widget build(BuildContext context) {
     final _postsVM = Provider.of<List<Post>>(context);
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: ListView.builder(
           itemCount: _postsVM.length,
           itemBuilder: (BuildContext context, int index) {
