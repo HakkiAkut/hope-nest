@@ -3,6 +3,7 @@ import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
 import 'package:hope_nest/models/post.dart';
 import 'package:hope_nest/util/constants/navigation_constants.dart';
+import 'package:hope_nest/util/enum/user_type.dart';
 import 'package:hope_nest/views/advert_page/advert_view.dart';
 import 'package:hope_nest/views/post_page/post_view.dart';
 import 'package:hope_nest/views/profile/profile_page.dart';
@@ -18,10 +19,10 @@ class RouteGenerator {
         );
 
       case NavigationConstants.PROFILE:
-        if (args is AppUser) {
+        if (args is UserType) {
           return MaterialPageRoute(
             builder: (_) => ProfilePage(
-              appUser: args,
+              userType: args,
             ),
           );
         }
