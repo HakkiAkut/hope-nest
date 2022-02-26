@@ -6,6 +6,7 @@ import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/views/components/advert_info_container/advert_info_container.dart';
 import 'package:hope_nest/views/components/app_bar/app_bar.dart';
+import 'package:hope_nest/views/components/image_container/image_container.dart';
 import 'package:hope_nest/views/components/owner_info_tile/owner_info_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -28,11 +29,9 @@ class _AdvertViewState extends State<AdvertView> {
       appBar: const CustomAppBar(),
       body: Column(
         children: [
-          Container(
-            width: DynamicSize.width(context, 1),
-            height: DynamicSize.height(context, 0.35),
+          ImageContainer(
+            url: widget.advert.url,
             color: Colors.orangeAccent.shade200,
-            child: Image.network(widget.advert.url),
           ),
           Container(
             width: DynamicSize.width(context, 0.93),
