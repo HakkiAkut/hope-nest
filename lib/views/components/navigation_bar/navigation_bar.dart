@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hope_nest/util/constants/palette.dart';
 
 class NavigationBar extends StatelessWidget {
   const NavigationBar({Key? key}) : super(key: key);
@@ -7,12 +8,12 @@ class NavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const TabBar(
-      indicatorColor: Colors.blue,
-      unselectedLabelColor: Colors.grey,
-      labelColor: Colors.blue,
+      indicatorColor: Colors.orange,
+      unselectedLabelColor: Colors.black,
+      labelColor: Palette.NAVBAR_BACKGROUND_HOVER_TEXT,
       indicator: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(25.0)),
-        color: Colors.green,
+        color: Palette.NAVBAR_BACKGROUND_HOVER,
       ),
       tabs: [
         Tab(
