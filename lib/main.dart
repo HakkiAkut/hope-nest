@@ -32,7 +32,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Palette.MAIN_COLOR,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: const RootPage(),
+        home: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/login/background.jpg"), fit: BoxFit.cover)),
+            child: const RootPage()),
         onGenerateRoute: RouteGenerator.initializeRoute,
         onUnknownRoute: (RouteSettings settings) => MaterialPageRoute(
           builder: (context) => const RootPage(),
