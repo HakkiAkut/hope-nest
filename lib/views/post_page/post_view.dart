@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/post.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
+import 'package:hope_nest/util/enum/user_type.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
+import 'package:hope_nest/views/components/app_bar/app_bar.dart';
 import 'package:hope_nest/views/components/comment_list/comment_list.dart';
 import 'package:hope_nest/views/components/owner_info_tile/owner_info_tile.dart';
 import 'package:provider/provider.dart';
@@ -23,9 +25,7 @@ class _PostViewState extends State<PostView> {
     final _appUserVM = Provider.of<AppUserVM>(context);
     _appUserVM.getCommentAndOwner(pid: widget.post.id, uid: widget.post.uid);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Return Back"),
-      ),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -58,7 +58,10 @@ class _PostViewState extends State<PostView> {
             ),
             _appUserVM.state == AppState.BUSY
                 ? const CircularProgressIndicator()
-                : OwnerInfoTile(appUser: _appUserVM.postOwner!),
+                : OwnerInfoTile(
+                    appUser: _appUserVM.postOwner!,
+                    userType: UserType.postOwner,
+                  ),
             Container(
               width: DynamicSize.width(context, 0.93),
               height: DynamicSize.height(context, 0.11),

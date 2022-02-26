@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hope_nest/util/enum/user_type.dart';
+import 'package:hope_nest/views/components/app_bar/app_bar.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final UserType userType;
+
+  const ProfilePage({Key? key, required this.userType}) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -10,6 +14,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Scaffold(
+      appBar: CustomAppBar(),
+    );
   }
 }

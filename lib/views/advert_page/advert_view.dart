@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
+import 'package:hope_nest/util/enum/user_type.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/views/components/advert_info_container/advert_info_container.dart';
+import 'package:hope_nest/views/components/app_bar/app_bar.dart';
 import 'package:hope_nest/views/components/owner_info_tile/owner_info_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -23,10 +25,7 @@ class _AdvertViewState extends State<AdvertView> {
     _appUserVM.getAdvertOwner(id: widget.advert.uid);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text("Return Back"),
-      ),
+      appBar: const CustomAppBar(),
       body: Column(
         children: [
           Container(
@@ -49,7 +48,10 @@ class _AdvertViewState extends State<AdvertView> {
           ),
           _appUserVM.state == AppState.BUSY
               ? const CircularProgressIndicator()
-              : OwnerInfoTile(appUser: _appUserVM.advertOwner!)
+              : OwnerInfoTile(
+                  appUser: _appUserVM.advertOwner!,
+                  userType: UserType.advertOwner,
+                )
         ],
       ),
     );
