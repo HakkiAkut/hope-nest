@@ -9,6 +9,7 @@ import 'package:hope_nest/views/components/advert_info_container/advert_info_con
 import 'package:hope_nest/views/components/app_bar/app_bar.dart';
 import 'package:hope_nest/views/components/image_container/image_container.dart';
 import 'package:hope_nest/views/components/owner_info_tile/owner_info_tile.dart';
+import 'package:hope_nest/views/components/styles/background_style.dart';
 import 'package:provider/provider.dart';
 
 class AdvertView extends StatefulWidget {
@@ -27,11 +28,7 @@ class _AdvertViewState extends State<AdvertView> {
     _appUserVM.getAdvertOwner(id: widget.advert.uid);
 
     return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage("assets/login/background2.jpg"),
-            fit: BoxFit.cover),
-      ),
+      decoration: backgroundStyle,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: const CustomAppBar(),
