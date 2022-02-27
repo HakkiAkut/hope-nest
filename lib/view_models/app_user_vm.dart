@@ -123,8 +123,14 @@ class AppUserVM
 
   void getCommentAndOwner({required String pid, required String uid}) async {
     if (_comments == null || _comments!.first.pid != pid) {
-      getPostOwner(id: uid);
-      _comments = await getCommentByPID(pid: pid);
+      try {
+        getPostOwner(id: uid);
+        _comments = await getCommentByPID(pid: pid);
+        print(_comments!.length);
+        _comments ??= <Comment>[Comment(id: "", uid: uid, pid: pid)];
+      } finally {
+        state = AppState.IDLE;
+      }
     }
   }
 
