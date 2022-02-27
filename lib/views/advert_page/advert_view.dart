@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/advert.dart';
+import 'package:hope_nest/util/constants/palette.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
 import 'package:hope_nest/util/enum/user_type.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
@@ -25,33 +26,45 @@ class _AdvertViewState extends State<AdvertView> {
     final _appUserVM = Provider.of<AppUserVM>(context);
     _appUserVM.getAdvertOwner(id: widget.advert.uid);
 
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      body: Column(
-        children: [
-          ImageContainer(
-            url: widget.advert.url,
-            color: Colors.orangeAccent.shade200,
-          ),
-          Container(
-            width: DynamicSize.width(context, 0.93),
-            height: DynamicSize.height(context, 0.11),
-            child: Text(
-              widget.advert.description!,
-              style: TextStyle(color: Colors.grey.shade600),
+    return Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/login/background2.jpg"),
+            fit: BoxFit.cover),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: const CustomAppBar(),
+        body: Column(
+          children: [
+            ImageContainer(
+              url: widget.advert.url,
+              color: Palette.MAIN_COLOR_ORANGE,
             ),
-          ),
-          AdvertInfoContainer(advert: widget.advert),
-          SizedBox(
-            height: DynamicSize.height(context, 0.03),
-          ),
-          _appUserVM.state == AppState.BUSY
-              ? const CircularProgressIndicator()
-              : OwnerInfoTile(
-                  appUser: _appUserVM.advertOwner!,
-                  userType: UserType.advertOwner,
-                )
-        ],
+            SizedBox(
+              height: DynamicSize.height(context, 0.019),
+            ),
+            Container(
+              color: Palette.BACKGROUND,
+              width: DynamicSize.width(context, 0.93),
+              height: DynamicSize.height(context, 0.15),
+              child: Text(
+                widget.advert.description!,
+                style: TextStyle(color: Colors.grey.shade600),
+              ),
+            ),
+            AdvertInfoContainer(advert: widget.advert),
+            SizedBox(
+              height: DynamicSize.height(context, 0.03),
+            ),
+            _appUserVM.state == AppState.BUSY
+                ? const CircularProgressIndicator()
+                : OwnerInfoTile(
+                    appUser: _appUserVM.advertOwner!,
+                    userType: UserType.advertOwner,
+                  )
+          ],
+        ),
       ),
     );
   }
