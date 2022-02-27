@@ -21,4 +21,9 @@ class AdvertVM with ChangeNotifier implements AdvertMethods {
   Stream<List<Advert>>? getAdverts() {
     return _repository.getAdverts();
   }
+
+  @override
+  Stream<List<Advert>>? getAdvertsByUID({required String uid}) {
+    return _repository.getAdvertsByUID(uid: uid);
+  }
 }

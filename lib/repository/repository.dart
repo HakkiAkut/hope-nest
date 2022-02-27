@@ -118,4 +118,12 @@ class Repository
     }
     return null;
   }
+
+  @override
+  Stream<List<Advert>>? getAdvertsByUID({required String uid}) {
+    if (dbService == DBService.FIRESTORE) {
+      return _firestore.getAdvertsByUID(uid: uid);
+    }
+    return null;
+  }
 }

@@ -76,4 +76,17 @@ class UserDatabaseService
         .map((doc) => Comment.fromMap(doc.data() as Map<String, dynamic>))
         .toList();
   }
+
+  @override
+  Stream<List<Advert>>? getAdvertsByUID({required String uid}) {
+    Stream<QuerySnapshot> qp = _firestore
+        .collection('adverts')
+        .where("userId", isEqualTo: uid)
+        .orderBy('date', descending: true)
+        .limit(10)
+        .snapshots();
+    return qp.map((docs) => docs.docs
+        .map((doc) => Advert.fromMap(doc.data() as Map<String, dynamic>))
+        .toList());
+  }
 }
