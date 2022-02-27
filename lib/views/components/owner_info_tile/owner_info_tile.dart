@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hope_nest/models/app_user.dart';
 import 'package:hope_nest/util/constants/navigation_constants.dart';
 import 'package:hope_nest/util/enum/user_type.dart';
+import 'package:hope_nest/views/components/owner_info_tile/circular_user_image.dart';
 
 class OwnerInfoTile extends StatelessWidget {
   final AppUser appUser;
@@ -13,9 +14,8 @@ class OwnerInfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: appUser.image != ""
+      leading: CircularUserImage(
+        image: appUser.image != ""
             ? Image.network(
                 appUser.image!,
               )
