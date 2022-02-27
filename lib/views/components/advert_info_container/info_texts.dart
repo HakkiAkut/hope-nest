@@ -10,7 +10,16 @@ class InfoTexts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [Text(title), Text(info)],
+      children: [
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        Text(
+          info,
+          style: const TextStyle(fontSize: 14),
+        )
+      ],
     );
   }
 }
