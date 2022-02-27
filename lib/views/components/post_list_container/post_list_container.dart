@@ -13,8 +13,8 @@ class PostListContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         child: Container(
-          margin: const EdgeInsets.all(9),
-          height: DynamicSize.height(context, 0.08),
+          margin: EdgeInsets.only(bottom: DynamicSize.height(context, 0.036)),
+          height: DynamicSize.height(context, 0.097),
           decoration: BoxDecoration(
             border: Border.all(width: 1, color: Colors.orangeAccent),
             borderRadius: BorderRadius.circular(8),
@@ -37,11 +37,15 @@ class PostListContainer extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text("${post.title}"),
+                  Text(
+                    "${post.title}",
+                    style: const TextStyle(fontSize: 18),
+                  ),
                 ],
               ),
               Text(
                 DateFormat('dd/MM/yyyy').format(post.date.toDate()),
+                style: const TextStyle(fontSize: 16),
               ),
             ],
           ),
