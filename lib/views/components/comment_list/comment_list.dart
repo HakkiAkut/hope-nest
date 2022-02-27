@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
 import 'package:hope_nest/views/components/comment_list/comment_tile.dart';
@@ -18,8 +17,8 @@ class _CommentListState extends State<CommentList> {
     final _appUserVM = Provider.of<AppUserVM>(context);
     return _appUserVM.state == AppState.BUSY
         ? const CircularProgressIndicator()
-        : SizedBox(
-            width: DynamicSize.width(context, 0.93),
+        : Container(
+            color: Colors.transparent,
             child: ListView.builder(
               itemCount: _appUserVM.comments!.length,
               itemBuilder: (context, index) {
