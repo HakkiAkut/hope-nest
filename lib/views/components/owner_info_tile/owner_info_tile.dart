@@ -21,8 +21,8 @@ class OwnerInfoTile extends StatelessWidget {
               )
             : Image.asset("assets/user/user.png"),
       ),
-      title: Text(appUser.name! +" "+ appUser.surname!),
-      subtitle: Text(appUser.location!) ,
+      title: Text(appUser.name! +" "+ appUser.surname!, style: const TextStyle(fontSize: 13),),
+      subtitle: Text(appUser.location!, style: const TextStyle(fontSize: 13)) ,
       onTap: () {
         Navigator.pushNamed(context, NavigationConstants.PROFILE,
             arguments: userType);
