@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
 import 'package:hope_nest/models/comment.dart';
@@ -7,7 +9,10 @@ import 'package:hope_nest/services/database/base/blog_db_base.dart';
 import 'package:hope_nest/services/database/base/comments_db_base.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
 import 'package:hope_nest/services/database/firebase/database_service.dart';
+import 'package:hope_nest/services/storage/base/storage_base.dart';
+import 'package:hope_nest/services/storage/firebase/storage_service.dart';
 import 'package:hope_nest/util/enum/database_service.dart';
+import 'package:hope_nest/util/enum/storage_service_type.dart';
 import 'package:hope_nest/util/init/service_locator.dart';
 import 'package:hope_nest/util/enum/web_service.dart';
 import 'package:hope_nest/services/auth/base/auth_base.dart';
@@ -23,11 +28,14 @@ class Repository
         UserMethods,
         AdvertMethods,
         BlogMethods,
-        CommentMethods {
+        CommentMethods,
+        StorageMethods {
   final AuthService _auth = serviceLocator<AuthService>();
   final UserDatabaseService _firestore = serviceLocator<UserDatabaseService>();
+  final StorageService _storage = serviceLocator<StorageService>();
   final WebService webService = WebService.FIREBASE;
   final DBService dbService = DBService.FIRESTORE;
+  final StorageServiceType sSType = StorageServiceType.FIREBASE;
 
   @override
   Future<AppUser?> currentUser() async {
@@ -123,6 +131,15 @@ class Repository
   Stream<List<Advert>>? getAdvertsByUID({required String uid}) {
     if (dbService == DBService.FIRESTORE) {
       return _firestore.getAdvertsByUID(uid: uid);
+    }
+    return null;
+  }
+
+  @override
+  Future<String?>? uploadFile(
+      {required String uid, required File uploadedFile}) {
+    if (sSType == StorageServiceType.FIREBASE) {
+      return _storage.uploadFile(uid: uid, uploadedFile: uploadedFile);
     }
     return null;
   }
