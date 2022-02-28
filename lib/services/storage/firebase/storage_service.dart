@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hope_nest/services/storage/base/storage_base.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class Storage implements StorageMethods {
+class StorageService implements StorageMethods {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   late Reference _reference;
 
