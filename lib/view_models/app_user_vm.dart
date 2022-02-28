@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:hope_nest/models/app_user.dart';
 import 'package:hope_nest/models/comment.dart';
@@ -5,13 +7,14 @@ import 'package:hope_nest/repository/repository.dart';
 import 'package:hope_nest/services/auth/base/auth_base.dart';
 import 'package:hope_nest/services/database/base/comments_db_base.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
+import 'package:hope_nest/services/storage/base/storage_base.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
 import 'package:hope_nest/util/enum/login_state.dart';
 import 'package:hope_nest/util/init/service_locator.dart';
 
 class AppUserVM
     with ChangeNotifier
-    implements AuthMethods, UserMethods, CommentMethods {
+    implements AuthMethods, UserMethods, CommentMethods, StorageMethods {
   AppState _state = AppState.IDLE;
   LoginState _loginState = LoginState.SIGNIN;
 
@@ -147,5 +150,11 @@ class AppUserVM
     } finally {
       state = AppState.IDLE;
     }
+  }
+
+  @override
+  Future<String?>? uploadFile(
+      {required String uid, required File uploadedFile}) {
+    return _repository.uploadFile(uid: uid, uploadedFile: uploadedFile);
   }
 }

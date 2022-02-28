@@ -1,11 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/repository/repository.dart';
 import 'package:hope_nest/services/database/base/advert_db_base.dart';
+import 'package:hope_nest/services/storage/base/storage_base.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
 import 'package:hope_nest/util/init/service_locator.dart';
 
-class AdvertVM with ChangeNotifier implements AdvertMethods {
+class AdvertVM with ChangeNotifier implements AdvertMethods, StorageMethods {
   AppState _state = AppState.IDLE;
   final Repository _repository = serviceLocator<Repository>();
   int limit = 10;
@@ -25,5 +28,11 @@ class AdvertVM with ChangeNotifier implements AdvertMethods {
   @override
   Stream<List<Advert>>? getAdvertsByUID({required String uid}) {
     return _repository.getAdvertsByUID(uid: uid);
+  }
+
+  @override
+  Future<String?>? uploadFile(
+      {required String uid, required File uploadedFile}) {
+    return _repository.uploadFile(uid: uid, uploadedFile: uploadedFile);
   }
 }
