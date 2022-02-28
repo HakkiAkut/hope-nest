@@ -41,7 +41,7 @@ class _HomeRootPageState extends State<HomeRootPage> {
                     decoration: const BoxDecoration(
                         color: Palette.NAVBAR_BACKGROUND,
                         borderRadius: BorderRadius.all(Radius.circular(25.0))),
-                    child: const NavigationBar(),
+                    child: const CustomNavigationBar(),
                   ),
                 ),
                 Expanded(
