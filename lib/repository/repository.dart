@@ -143,4 +143,13 @@ class Repository
     }
     return null;
   }
+
+  @override
+  Future<bool?> setAdvert({required Advert advert}) async {
+    if (dbService == DBService.FIRESTORE) {
+      bool? ret = await _firestore.setAdvert(advert: advert);
+      return ret;
+    }
+    return null;
+  }
 }

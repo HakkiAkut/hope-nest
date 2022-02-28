@@ -32,7 +32,7 @@ class Advert {
     return {
       "id": id,
       "userId": uid,
-      "date": date,
+      "date": FieldValue.serverTimestamp(),
       "url": url,
       "description": description,
       "name": name,

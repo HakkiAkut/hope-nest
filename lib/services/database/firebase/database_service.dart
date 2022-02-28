@@ -18,7 +18,7 @@ class UserDatabaseService
       DocumentSnapshot user =
           await _firestore.collection("users").doc(id).get();
       Map<String, dynamic> userData = user.data() as Map<String, dynamic>;
-      AppUser newUser = AppUser.fromMap(userData!);
+      AppUser newUser = AppUser.fromMap(userData);
       return newUser;
     } catch (e) {
       print(e.toString());
@@ -88,5 +88,19 @@ class UserDatabaseService
     return qp.map((docs) => docs.docs
         .map((doc) => Advert.fromMap(doc.data() as Map<String, dynamic>))
         .toList());
+  }
+
+  @override
+  Future<bool?> setAdvert({required Advert advert}) async {
+    try {
+      print(advert.id);
+      print(advert.uid);
+      print(advert.date);
+      await _firestore.collection("adverts").doc(advert.id).set(advert.toMap());
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
   }
 }

@@ -35,4 +35,13 @@ class AdvertVM with ChangeNotifier implements AdvertMethods, StorageMethods {
       {required String uid, required File uploadedFile}) {
     return _repository.uploadFile(uid: uid, uploadedFile: uploadedFile);
   }
+
+  @override
+  Future<bool?> setAdvert({required Advert advert}) async {
+    if (advert.url != "") {
+      advert.url =
+          (await uploadFile(uid: advert.uid, uploadedFile: File(advert.url)))!;
+    }
+    return _repository.setAdvert(advert: advert);
+  }
 }
