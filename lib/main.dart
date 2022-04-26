@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hope_nest/util/constants/palette.dart';
-import 'package:hope_nest/util/init/route_genenrator.dart';
+import 'package:hope_nest/util/init/route_generator.dart';
 import 'package:hope_nest/util/init/service_locator.dart';
+import 'package:hope_nest/view_models/advert_vm.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
+import 'package:hope_nest/view_models/report_vm.dart';
 import 'package:hope_nest/views/root.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +26,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => AppUserVM(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => AdvertVM(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ReportVM(),
+        ),
       ],
       child: MaterialApp(
         title: 'Hope Nest',
@@ -35,7 +43,8 @@ class MyApp extends StatelessWidget {
         home: Container(
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage("assets/login/background.jpg"), fit: BoxFit.cover)),
+                    image: AssetImage("assets/login/background.jpg"),
+                    fit: BoxFit.cover)),
             child: const RootPage()),
         onGenerateRoute: RouteGenerator.initializeRoute,
         onUnknownRoute: (RouteSettings settings) => MaterialPageRoute(
