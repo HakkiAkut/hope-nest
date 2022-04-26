@@ -53,6 +53,7 @@ class AppUserVM
   @override
   Future<AppUser?> currentUser() async {
     try {
+      print("current");
       state = AppState.BUSY;
       _appUser = await _repository.currentUser();
       if (_appUser != null) {
@@ -68,23 +69,37 @@ class AppUserVM
   @override
   Future<AppUser?> signInWithEmail(
       {required String email, required String pwd}) async {
+    print("sign in vm");
     try {
+      print("start");
+      print(email + pwd);
       state = AppState.BUSY;
       _appUser = await _repository.signInWithEmail(email: email, pwd: pwd);
+      print(_appUser!.uid);
       return _appUser;
     } finally {
+      print(_appUser!.uid);
       state = AppState.IDLE;
     }
   }
 
   @override
-  Future<AppUser?> signUpWithEmail({
-    required String email,
-    required String pwd,
-  }) async {
+  Future<AppUser?> signUpWithEmail(
+      {required String email,
+      required String pwd,
+      String? name,
+      String? surname,
+      String? phone,
+      String? location}) async {
     try {
       state = AppState.BUSY;
-      _appUser = await _repository.signUpWithEmail(email: email, pwd: pwd);
+      _appUser = await _repository.signUpWithEmail(
+          email: email,
+          pwd: pwd,
+          name: name,
+          surname: surname,
+          phone: phone,
+          location: location);
       return _appUser;
     } finally {
       state = AppState.IDLE;
