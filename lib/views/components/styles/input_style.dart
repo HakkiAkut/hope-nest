@@ -3,6 +3,7 @@ import 'package:hope_nest/util/constants/palette.dart';
 
 /// base box decoration
 final inputStyle = InputDecoration(
-    fillColor: Palette.INPUT_BOX, filled: true,  border: OutlineInputBorder(
-  borderRadius: BorderRadius.circular(30),borderSide: BorderSide.none)
-);
+    filled: true,
+    border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30),
+        borderSide: const BorderSide(color: Palette.BOLD_COLOR)));
