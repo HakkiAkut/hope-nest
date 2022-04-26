@@ -9,6 +9,9 @@ class AuthService implements AuthMethods {
   @override
   Future<AppUser?> currentUser() async {
     User? user = _auth.currentUser;
+    print("user bastır");
+    print(user);
+    print("user bastır 1");
 
     return user != null ? convertUserToAppUser(user) : null;
   }
@@ -21,9 +24,12 @@ class AuthService implements AuthMethods {
   }
 
   /// converts Firebase user to Application User
-  AppUser convertUserToAppUser(User? user) {
-    // TODO firestore connection
-    return AppUser(uid: user!.uid, email: user!.email);
+  AppUser? convertUserToAppUser(User? user) {
+    print("useer");
+    print(user);
+    return user != null
+        ? AppUser(uid: user.uid, email: user.email)
+        : null;
   }
 
 
@@ -31,15 +37,22 @@ class AuthService implements AuthMethods {
   Future<AppUser?> signUpWithEmail({required String email, required String pwd}) async {
     UserCredential credential =
     await _auth.createUserWithEmailAndPassword(email: email, password: pwd);
+    print("auth çalıştı");
     return convertUserToAppUser(credential.user);
   }
 
   /// Firebase authentication with email and password
   @override
   Future<AppUser?> signInWithEmail({required String email, required String pwd}) async {
-    UserCredential credential =
-    await _auth.signInWithEmailAndPassword(email: email, password: pwd);
-    return convertUserToAppUser(credential.user);
+    print("auth çalıştı");
+    try{
+      UserCredential credential =
+      await _auth.signInWithEmailAndPassword(email: email, password: pwd);
+      print("auth bitti");
+      return convertUserToAppUser(credential.user);
+    }catch(e){
+      print("hata burada fire");
+    }
   }
 
 }
