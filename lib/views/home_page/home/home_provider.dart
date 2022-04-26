@@ -9,8 +9,9 @@ class HomeProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _advertVM = Provider.of<AdvertVM>(context);
     return StreamProvider<List<Advert>>.value(
-      value: AdvertVM().getAdverts(),
+      value: _advertVM.getAdverts(),
       initialData: const [],
       child: const HomeViewPage(),
       updateShouldNotify: (prev, now) => true,
