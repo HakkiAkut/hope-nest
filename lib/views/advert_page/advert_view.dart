@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/advert.dart';
+import 'package:hope_nest/util/constants/navigation_constants.dart';
 import 'package:hope_nest/util/constants/palette.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
 import 'package:hope_nest/util/enum/user_type.dart';
@@ -31,7 +32,26 @@ class _AdvertViewState extends State<AdvertView> {
       decoration: backgroundStyle,
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: const CustomAppBar(),
+        appBar: CustomAppBar(
+          text: "Return Back",
+          actionWidget: GestureDetector(
+            child: Container(
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  color: Palette.MAIN_COLOR_ORANGE,
+                  borderRadius: BorderRadius.circular(25)),
+              child: const Text(
+                "report",
+                style: TextStyle(color: Palette.BACKGROUND),
+              ),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, NavigationConstants.REPORT,
+                  arguments: widget.advert);
+            },
+          ),
+        ),
         body: Column(
           children: [
             ImageContainer(
