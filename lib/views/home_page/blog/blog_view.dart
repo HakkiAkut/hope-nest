@@ -17,6 +17,8 @@ class _BlogViewState extends State<BlogView> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: ListView.builder(
+          physics: ScrollPhysics(),
+          shrinkWrap: true,
           itemCount: _postsVM.length,
           itemBuilder: (BuildContext context, int index) {
             return PostListContainer(post: _postsVM[index]);
