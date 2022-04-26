@@ -13,6 +13,7 @@ class Advert {
   double? weight;
   bool? vaccines;
   bool? training;
+  String? location;
 
   Advert(
       {required this.id,
@@ -26,7 +27,9 @@ class Advert {
       this.race,
       this.weight,
       this.vaccines,
-      this.training});
+      this.training,
+      this.location
+      });
 
   Map<String, dynamic> toMap() {
     return {
@@ -42,6 +45,7 @@ class Advert {
       "weight": weight,
       "vaccines": vaccines,
       "training": training,
+      "location":location,
     };
   }
 
@@ -59,6 +63,7 @@ class Advert {
       weight: map['weight'] as double,
       vaccines: map['vaccines'] as bool,
       training: map['training'] as bool,
+      location: map['location'] as String,
     );
   }
 }
