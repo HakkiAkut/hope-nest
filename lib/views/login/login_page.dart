@@ -4,7 +4,7 @@ import 'package:hope_nest/util/enum/login_state.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/views/components/styles/button_style.dart';
-import 'package:hope_nest/views/components/styles/input_style.dart';
+import 'package:hope_nest/views/components/styles/login_input_style.dart';
 import 'package:hope_nest/views/components/styles/text_style.dart';
 import 'package:provider/provider.dart';
 
@@ -18,40 +18,54 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   String _pwd = "";
   String _email = "";
+  String _name = "";
+  String _surname = "";
+  String _phone = "";
+  String _location = "";
 
   var key1 = GlobalKey<FormFieldState>();
   var key2 = GlobalKey<FormFieldState>();
+  var key3 = GlobalKey<FormFieldState>();
+  var key4 = GlobalKey<FormFieldState>();
+  var key5 = GlobalKey<FormFieldState>();
+  var key6 = GlobalKey<FormFieldState>();
 
   @override
   Widget build(BuildContext context) {
+    print("login");
+    debugPrint("login2");
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Image.asset("assets/login/background.jpg"),
-            Container(
-              child: Column(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(DynamicSize.height(context, 0.05)),
-                    height: DynamicSize.height(context, 0.30),
-                    child: Image.asset("assets/logo/logo.png"),
-                  ),
-                  Container(
-                    height: DynamicSize.height(context, 0.60),
-                    child: _loginLayer(),
-                  )
-                ],
+      body: Container(
+        height: DynamicSize.height(context, 1.70),
+        child: SingleChildScrollView(
+          child: Stack(
+            children: [
+              Image.asset("assets/login/background.jpg"),
+              Container(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.all(DynamicSize.height(context, 0.05)),
+                      height: DynamicSize.height(context, 0.30),
+                      child: Image.asset("assets/logo/logo.png"),
+                    ),
+                    Container(
+                      height: DynamicSize.height(context, 1.30),
+                      child: _loginLayer(context),
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
   /// layer that have login process components
-  Container _loginLayer() {
+  Container _loginLayer(BuildContext context) {
+    final _appUserVM = Provider.of<AppUserVM>(context);
     return Container(
       margin: const EdgeInsets.only(
         left: 10,
@@ -72,14 +86,40 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(
               height: 18.0,
             ),
+            _appUserVM.loginState == LoginState.SIGNUP
+                ? signUpInfo()
+                : Container(),
             _loginButton(context: context),
             const SizedBox(
               height: 5.0,
             ),
-            _changeSignMethodButton(context: context)
+            _changeSignMethodButton(context: context),
           ],
         ),
       ),
+    );
+  }
+
+  Column signUpInfo() {
+    return Column(
+      children: [
+        _nameBox(),
+        const SizedBox(
+          height: 18.0,
+        ),
+        _surnameBox(),
+        const SizedBox(
+          height: 18.0,
+        ),
+        _phoneBox(),
+        const SizedBox(
+          height: 18.0,
+        ),
+        _locationBox(),
+        const SizedBox(
+          height: 18.0,
+        ),
+      ],
     );
   }
 
@@ -121,15 +161,27 @@ class _LoginPageState extends State<LoginPage> {
       child: ElevatedButton(
         style: buttonStyle,
         onPressed: () async {
+          print("pressed");
           if (key1.currentState!.validate() && key2.currentState!.validate()) {
             key1.currentState!.save();
             key2.currentState!.save();
+            print("validated");
             try {
+              print("login attempt");
+              print(LoginState.values[_appUserVM.loginState.index].toString());
+              print(_appUserVM.loginState == LoginState.SIGNIN);
               _appUserVM.loginState == LoginState.SIGNIN
                   ? await _appUserVM.signInWithEmail(email: _email, pwd: _pwd)
-                  : await _appUserVM.signUpWithEmail(email: _email, pwd: _pwd);
+                  : await _appUserVM.signUpWithEmail(
+                      email: _email,
+                      pwd: _pwd,
+                      name: _name,
+                      surname: _surname,
+                      phone: _phone,
+                      location: _location);
             } catch (e) {
-              // TODO show error message
+              debugPrint("hatalı");
+              debugPrint(e.toString());
             }
           } else {
             print("hata var");
@@ -166,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
             return null;
           }
         },
-        decoration: inputStyle.copyWith(
+        decoration: loginInputStyle.copyWith(
           hintText: 'Password',
         ),
       ),
@@ -193,8 +245,104 @@ class _LoginPageState extends State<LoginPage> {
             return null;
           }
         },
-        decoration: inputStyle.copyWith(
+        decoration: loginInputStyle.copyWith(
           hintText: 'Email',
+        ),
+      ),
+    );
+  }
+
+  /// password box
+  Container _nameBox() {
+    return Container(
+      margin:
+          EdgeInsets.symmetric(horizontal: DynamicSize.height(context, 0.05)),
+      child: TextFormField(
+        //keyboardType: TextInputType.pas,
+        key: key3,
+        onChanged: (String s) => _name = s,
+        style: normalTextStyle,
+        validator: (_value) {
+          if (_value!.length < 1) {
+            return "name can not be null!";
+          } else {
+            return null;
+          }
+        },
+        decoration: loginInputStyle.copyWith(
+          hintText: 'Name',
+        ),
+      ),
+    );
+  }
+
+  /// password box
+  Container _surnameBox() {
+    return Container(
+      margin:
+          EdgeInsets.symmetric(horizontal: DynamicSize.height(context, 0.05)),
+      child: TextFormField(
+        //keyboardType: TextInputType.pas,
+        key: key4,
+        onChanged: (String s) => _surname = s,
+        style: normalTextStyle,
+        validator: (_value) {
+          if (_value!.length < 1) {
+            return "surname can not be null!";
+          } else {
+            return null;
+          }
+        },
+        decoration: loginInputStyle.copyWith(
+          hintText: 'Surname',
+        ),
+      ),
+    );
+  }
+
+  /// password box
+  Container _phoneBox() {
+    return Container(
+      margin:
+          EdgeInsets.symmetric(horizontal: DynamicSize.height(context, 0.05)),
+      child: TextFormField(
+        //keyboardType: TextInputType.pas,
+        key: key5,
+        onChanged: (String s) => _phone = s,
+        style: normalTextStyle,
+        validator: (_value) {
+          if (_value!.length < 1) {
+            return "phone can not be null!";
+          } else {
+            return null;
+          }
+        },
+        decoration: loginInputStyle.copyWith(
+          hintText: 'Phone',
+        ),
+      ),
+    );
+  }
+
+  /// password box
+  Container _locationBox() {
+    return Container(
+      margin:
+          EdgeInsets.symmetric(horizontal: DynamicSize.height(context, 0.05)),
+      child: TextFormField(
+        //keyboardType: TextInputType.pas,
+        key: key6,
+        onChanged: (String s) => _location = s,
+        style: normalTextStyle,
+        validator: (_value) {
+          if (_value!.length < 1) {
+            return "location can not be null!";
+          } else {
+            return null;
+          }
+        },
+        decoration: loginInputStyle.copyWith(
+          hintText: 'Location',
         ),
       ),
     );
