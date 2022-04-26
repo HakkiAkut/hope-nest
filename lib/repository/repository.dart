@@ -1,12 +1,14 @@
 import 'dart:io';
-
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
 import 'package:hope_nest/models/comment.dart';
 import 'package:hope_nest/models/post.dart';
+import 'package:hope_nest/models/report.dart';
+import 'package:hope_nest/models/search.dart';
 import 'package:hope_nest/services/database/base/advert_db_base.dart';
 import 'package:hope_nest/services/database/base/blog_db_base.dart';
 import 'package:hope_nest/services/database/base/comments_db_base.dart';
+import 'package:hope_nest/services/database/base/report_db_base.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
 import 'package:hope_nest/services/database/firebase/database_service.dart';
 import 'package:hope_nest/services/storage/base/storage_base.dart';
@@ -29,7 +31,7 @@ class Repository
         AdvertMethods,
         BlogMethods,
         CommentMethods,
-        StorageMethods {
+        StorageMethods,ReportMethods {
   final AuthService _auth = serviceLocator<AuthService>();
   final UserDatabaseService _firestore = serviceLocator<UserDatabaseService>();
   final StorageService _storage = serviceLocator<StorageService>();
@@ -42,6 +44,7 @@ class Repository
     if (webService == WebService.FIREBASE) {
       AppUser? appUser = await _auth.currentUser();
       if (appUser != null) {
+        print(appUser.uid);
         return await _firestore.getUser(id: appUser.uid);
       } else {
         return null;
@@ -61,10 +64,20 @@ class Repository
 
   @override
   Future<AppUser?> signUpWithEmail(
-      {required String email, required String pwd}) async {
+      {required String email,
+      required String pwd,
+      String? name,
+      String? surname,
+      String? phone,
+      String? location}) async {
     if (webService == WebService.FIREBASE) {
       AppUser? appUser = await _auth.signUpWithEmail(email: email, pwd: pwd);
       if (appUser != null) {
+        appUser.name = name;
+        appUser.surname = surname;
+        appUser.phone = phone;
+        appUser.location = location;
+        appUser.description = "An animal lover";
         await setUser(appUser: appUser);
         return await currentUser();
       }
@@ -75,12 +88,18 @@ class Repository
   @override
   Future<AppUser?> signInWithEmail(
       {required String email, required String pwd}) async {
+    print("start repo");
     if (webService == WebService.FIREBASE) {
+      print("start repo firebase");
       AppUser? appUser = await _auth.signInWithEmail(email: email, pwd: pwd);
+      print("repo return");
       if (appUser != null) {
+        print("not null");
+        print(appUser.uid);
         return await currentUser();
       }
     }
+    print("null");
     return null;
   }
 
@@ -108,8 +127,13 @@ class Repository
     return null;
   }
 
-  @override
-  Future<List<Comment>>? getC() {}
+  Stream<List<Advert>>? getFilteredAdverts(
+      {required SearchAdvert searchAdvert}) {
+    if (dbService == DBService.FIRESTORE) {
+      return _firestore.getFilteredAdverts(searchAdvert: searchAdvert);
+    }
+    return null;
+  }
 
   @override
   Stream<List<Post>>? getPosts() {
@@ -152,4 +176,15 @@ class Repository
     }
     return null;
   }
+
+  @override
+  Future<bool?> setReport({required Report report}) async {
+    if (dbService == DBService.FIRESTORE) {
+      bool? ret = await _firestore.setReport(report: report);
+      return ret;
+    }
+    return null;
+  }
+
+
 }
