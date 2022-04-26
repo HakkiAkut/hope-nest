@@ -7,12 +7,18 @@ import 'package:hope_nest/util/enum/user_type.dart';
 import 'package:hope_nest/views/advert_page/advert_view.dart';
 import 'package:hope_nest/views/post_page/post_view.dart';
 import 'package:hope_nest/views/profile/profile_page.dart';
+import 'package:hope_nest/views/report_page/report_page.dart';
+import 'package:hope_nest/views/root.dart';
 
 class RouteGenerator {
   static Route<dynamic> initializeRoute(RouteSettings settings) {
     final args = settings.arguments;
 
     switch (settings.name) {
+      case NavigationConstants.ROOT:
+        return MaterialPageRoute(
+          builder: (_) => RootPage(),
+        );
       case NavigationConstants.HOME_PAGE:
         return MaterialPageRoute(
           builder: (_) => Container(),
@@ -43,6 +49,22 @@ class RouteGenerator {
           return MaterialPageRoute(
             builder: (_) => PostView(
               post: args,
+            ),
+          );
+        }
+        return _errorRoute();
+
+      case NavigationConstants.REPORT:
+        if (args is Advert) {
+          return MaterialPageRoute(
+            builder: (_) => ReportPage(
+              reportAdvert: args,
+            ),
+          );
+        } else if (args is AppUser) {
+          return MaterialPageRoute(
+            builder: (_) => ReportPage(
+              reportUser: args,
             ),
           );
         }

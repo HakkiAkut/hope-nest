@@ -4,4 +4,5 @@ class NavigationConstants {
   static const PROFILE = "/Profile";
   static const ADVERT = "/Advert";
   static const POST_PAGE ="/PostPage";
+  static const REPORT= "/ReportPage";
 }
