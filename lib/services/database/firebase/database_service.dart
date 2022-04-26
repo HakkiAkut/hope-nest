@@ -3,13 +3,16 @@ import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
 import 'package:hope_nest/models/comment.dart';
 import 'package:hope_nest/models/post.dart';
+import 'package:hope_nest/models/report.dart';
+import 'package:hope_nest/models/search.dart';
 import 'package:hope_nest/services/database/base/advert_db_base.dart';
 import 'package:hope_nest/services/database/base/blog_db_base.dart';
 import 'package:hope_nest/services/database/base/comments_db_base.dart';
+import 'package:hope_nest/services/database/base/report_db_base.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
 
 class UserDatabaseService
-    implements UserMethods, AdvertMethods, BlogMethods, CommentMethods {
+    implements UserMethods, AdvertMethods, BlogMethods, CommentMethods,ReportMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
@@ -44,6 +47,25 @@ class UserDatabaseService
   Stream<List<Advert>> getAdverts() {
     Stream<QuerySnapshot> qp = _firestore
         .collection('adverts')
+        .orderBy('date', descending: true)
+        .limit(10)
+        .snapshots();
+    return qp.map((docs) => docs.docs
+        .map((doc) => Advert.fromMap(doc.data() as Map<String, dynamic>))
+        .toList());
+  }
+
+  @override
+  Stream<List<Advert>> getFilteredAdverts(
+      {required SearchAdvert searchAdvert}) {
+    Query query= _firestore.collection('adverts');
+    if(searchAdvert.location !='' && searchAdvert.location != null){
+      query= query.where('location',isEqualTo: searchAdvert.location);
+    }
+    if(searchAdvert.kind !='' && searchAdvert.kind != null){
+      query= query.where('kind',isEqualTo: searchAdvert.kind);
+    }
+    Stream<QuerySnapshot> qp = query
         .orderBy('date', descending: true)
         .limit(10)
         .snapshots();
@@ -93,10 +115,21 @@ class UserDatabaseService
   @override
   Future<bool?> setAdvert({required Advert advert}) async {
     try {
-      print(advert.id);
-      print(advert.uid);
-      print(advert.date);
       await _firestore.collection("adverts").doc(advert.id).set(advert.toMap());
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  @override
+  Future<bool?> setReport({required Report report}) async {
+    try {
+      await _firestore
+          .collection("report")
+          .doc(report.id)
+          .set(report.toMap());
       return true;
     } catch (e) {
       print(e.toString());
