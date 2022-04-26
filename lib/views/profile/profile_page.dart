@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
+import 'package:hope_nest/util/constants/navigation_constants.dart';
+import 'package:hope_nest/util/constants/palette.dart';
 import 'package:hope_nest/util/enum/user_type.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/advert_vm.dart';
@@ -35,7 +37,27 @@ class _ProfilePageState extends State<ProfilePage> {
       height: DynamicSize.height(context, 1),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: const CustomAppBar(),
+        appBar: CustomAppBar(
+          text: "Return Back",
+          actionWidget: widget.userType == UserType.mainUser
+              ? GestureDetector(
+                  child: Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(color: Palette.MAIN_COLOR_ORANGE,
+                    borderRadius: BorderRadius.circular(25)
+                    ),
+                    child: const Text(
+                      "Log Out",
+                      style: TextStyle(color: Palette.BACKGROUND),
+                    ),
+                  ),
+                  onTap: () {
+                    _appUserVM.signOut();
+                    Navigator.pop(context);
+                    //Navigator.pushReplacementNamed(context, NavigationConstants.ROOT);
+                  })
+              : Container(),
+        ),
         body: SingleChildScrollView(
           child: Container(
             height: DynamicSize.height(context, 1.3),

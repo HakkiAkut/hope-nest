@@ -31,7 +31,9 @@ class _PostViewState extends State<PostView> {
       decoration: backgroundStyle,
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: const CustomAppBar(),
+        appBar: const CustomAppBar(
+          text: "Return Back",
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
