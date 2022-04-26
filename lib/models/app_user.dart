@@ -29,9 +29,9 @@ class AppUser {
       "surname": surname,
       "phone": phone,
       "email": email,
-      "image": image,
+      "image": image ?? "",
       "location": location,
-      "description": description,
+      "description": description ?? "An animal lover",
       "registration_date": registrationDate ?? FieldValue.serverTimestamp(),
     };
   }
