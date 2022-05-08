@@ -57,7 +57,7 @@ class _PostViewState extends State<PostView> {
                     style: TextStyle(color: Colors.black38, fontSize: 10),
                   ),
                   Text(
-                    widget.post.id!,
+                    widget.post.id,
                     style: const TextStyle(fontSize: 10),
                   ),
                 ],
