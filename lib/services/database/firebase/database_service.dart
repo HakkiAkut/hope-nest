@@ -1,19 +1,31 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
 import 'package:hope_nest/models/comment.dart';
 import 'package:hope_nest/models/post.dart';
+import 'package:hope_nest/models/chatroom.dart';
 import 'package:hope_nest/models/report.dart';
 import 'package:hope_nest/models/search.dart';
 import 'package:hope_nest/services/database/base/advert_db_base.dart';
 import 'package:hope_nest/services/database/base/blog_db_base.dart';
 import 'package:hope_nest/services/database/base/comments_db_base.dart';
 import 'package:hope_nest/services/database/base/report_db_base.dart';
+import 'package:hope_nest/services/database/base/chatRoom_db.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
 
 class UserDatabaseService
     implements UserMethods, AdvertMethods, BlogMethods, CommentMethods,ReportMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  String? getCurrentUserId() {
+    final User? user = auth.currentUser;
+    final userid = user?.uid;
+    return userid;
+
+  }
 
   @override
   Future<AppUser?> getUser({required String id}) async {
@@ -135,5 +147,17 @@ class UserDatabaseService
       print(e.toString());
       return false;
     }
+  }
+
+  @override
+  Stream<List<ChatRoom>>? getChatRoom({required List<String> users}) {
+    Stream<QuerySnapshot> qp = _firestore
+        .collection('chatRoom')
+        .where(users, arrayContains: getCurrentUserId())
+        .orderBy('date', descending: true)
+        .snapshots();
+    return qp.map((docs) => docs.docs
+        .map((doc) => ChatRoom.fromMap(doc.data() as Map<String, dynamic>))
+        .toList());
   }
 }

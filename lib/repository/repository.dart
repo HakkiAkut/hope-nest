@@ -4,8 +4,10 @@ import 'package:hope_nest/models/app_user.dart';
 import 'package:hope_nest/models/comment.dart';
 import 'package:hope_nest/models/post.dart';
 import 'package:hope_nest/models/report.dart';
+import 'package:hope_nest/models/chatroom.dart';
 import 'package:hope_nest/models/search.dart';
 import 'package:hope_nest/services/database/base/advert_db_base.dart';
+import 'package:hope_nest/services/database/base/chatRoom_db.dart';
 import 'package:hope_nest/services/database/base/blog_db_base.dart';
 import 'package:hope_nest/services/database/base/comments_db_base.dart';
 import 'package:hope_nest/services/database/base/report_db_base.dart';
@@ -26,6 +28,7 @@ import 'package:hope_nest/services/auth/firebase/auth.dart';
 /// Works like DAO manager basically.
 class Repository
     implements
+        ChatRoomMethod,
         AuthMethods,
         UserMethods,
         AdvertMethods,
@@ -182,6 +185,14 @@ class Repository
     if (dbService == DBService.FIRESTORE) {
       bool? ret = await _firestore.setReport(report: report);
       return ret;
+    }
+    return null;
+  }
+
+  @override
+  Stream<List<ChatRoom>>? getChatRoom({required List<String> users}) {
+    if (dbService == DBService.FIRESTORE) {
+      return _firestore.getChatRoom(users: users);
     }
     return null;
   }
