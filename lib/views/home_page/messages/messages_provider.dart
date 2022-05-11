@@ -5,6 +5,8 @@ import 'package:hope_nest/views/home_page/blog/blog_view.dart';
 import 'package:hope_nest/views/home_page/messages/messages_view.dart';
 import 'package:provider/provider.dart';
 
+import '../../../models/app_user.dart';
+import '../../../util/enum/user_type.dart';
 import '../../../view_models/app_user_vm.dart';
 
 class MessagesProvider extends StatelessWidget {
