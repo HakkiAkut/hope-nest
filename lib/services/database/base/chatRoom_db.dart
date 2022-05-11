@@ -1,5 +1,5 @@
 import 'package:hope_nest/models/chatroom.dart';
 
 abstract class ChatRoomMethod {
-  Stream<List<ChatRoom>>? getChatRoom({required List<String> users});
+  Stream<List<ChatRoom>>? getChatRoom({required String id});
 }

@@ -150,10 +150,10 @@ class UserDatabaseService
   }
 
   @override
-  Stream<List<ChatRoom>>? getChatRoom({required List<String> users}) {
+  Stream<List<ChatRoom>>? getChatRoom({required String id}) {
     Stream<QuerySnapshot> qp = _firestore
         .collection('chatRoom')
-        .where(users, arrayContains: getCurrentUserId())
+        .where("users", arrayContains: id)   //users firebase deki array
         .orderBy('date', descending: true)
         .snapshots();
     return qp.map((docs) => docs.docs

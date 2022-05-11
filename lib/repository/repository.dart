@@ -190,9 +190,9 @@ class Repository
   }
 
   @override
-  Stream<List<ChatRoom>>? getChatRoom({required List<String> users}) {
+  Stream<List<ChatRoom>>? getChatRoom({required String id}) {
     if (dbService == DBService.FIRESTORE) {
-      return _firestore.getChatRoom(users: users);
+      return _firestore.getChatRoom( id : id);
     }
     return null;
   }
