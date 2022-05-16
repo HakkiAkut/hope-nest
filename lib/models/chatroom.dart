@@ -3,17 +3,17 @@ import 'package:hope_nest/models/messages.dart';
 
 class ChatRoom {
   late String id;
-  Messages messages;
+  late Messages? messages;
   String? last_message;
   late Timestamp time;
-  late List <String> users;
+  late List<dynamic> users;
 
   ChatRoom(
       {required this.id,
         required this.time,
-        required this.messages,
         required this.last_message,
-        required this.users});
+        required this.users,
+        this.messages});
 
   Map<String, dynamic> toMap() {
     return {
@@ -28,10 +28,10 @@ class ChatRoom {
   factory ChatRoom.fromMap(Map<String, dynamic> map) {
     return ChatRoom(
       id: map['id'] as String,
-      messages: map['messages'] as Messages,
+      //messages: map['messages'] as Messages,
       last_message: map['last_message'] as String,
       time: map['time'] as Timestamp,
-      users: map['users'] as List<String>,
+      users: map['users'] as List<dynamic>,
     );
   }
 }

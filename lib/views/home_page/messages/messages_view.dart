@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/chatroom.dart';
+import 'package:hope_nest/view_models/chatRoom_vm.dart';
 import 'package:hope_nest/views/components/chatRoom_container/chatRoom_list_container.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ class _MessagesViewState extends State<MessagesView> {
   @override
   Widget build(BuildContext context) {
     final _chatRoom_vm = Provider.of<List<ChatRoom>>(context);
+
 
     return Scaffold(
       backgroundColor: Colors.transparent,

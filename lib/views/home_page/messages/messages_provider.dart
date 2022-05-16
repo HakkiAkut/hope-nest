@@ -14,10 +14,10 @@ class MessagesProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO Message's Provider and View Page
+    final _chatRoomVM = Provider.of<ChatRoomVM>(context);
     final _appUserVM = Provider.of<AppUserVM>(context);
     return StreamProvider<List<ChatRoom>>.value(
-    value: ChatRoomVM().getChatRoom(id: _appUserVM.appUser!.uid),
+    value: _chatRoomVM.getChatRoom(id: _appUserVM.appUser!.uid),
     initialData: const [],
     child: const MessagesView(),
     updateShouldNotify: (prev, now) => true,

@@ -154,7 +154,7 @@ class UserDatabaseService
     Stream<QuerySnapshot> qp = _firestore
         .collection('chatRoom')
         .where("users", arrayContains: id)   //users firebase deki array
-        .orderBy('date', descending: true)
+        .orderBy('time', descending: true)
         .snapshots();
     return qp.map((docs) => docs.docs
         .map((doc) => ChatRoom.fromMap(doc.data() as Map<String, dynamic>))

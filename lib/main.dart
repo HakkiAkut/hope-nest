@@ -5,6 +5,7 @@ import 'package:hope_nest/util/init/route_generator.dart';
 import 'package:hope_nest/util/init/service_locator.dart';
 import 'package:hope_nest/view_models/advert_vm.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
+import 'package:hope_nest/view_models/chatRoom_vm.dart';
 import 'package:hope_nest/view_models/report_vm.dart';
 import 'package:hope_nest/views/root.dart';
 import 'package:provider/provider.dart';
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => ReportVM(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ChatRoomVM(),
         ),
       ],
       child: MaterialApp(
