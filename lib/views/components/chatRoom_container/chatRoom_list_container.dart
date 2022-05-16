@@ -42,7 +42,7 @@ class ChatRoomListContainer extends StatelessWidget {
                 ],
               ),
               Text(
-                DateFormat('dd/MM/yyyy').format(chatRoom.time.toDate()),
+                 DateFormat('dd/MM/yyyy').format(chatRoom.time.toDate()),
                 style: const TextStyle(fontSize: 16),
               ),
             ],
