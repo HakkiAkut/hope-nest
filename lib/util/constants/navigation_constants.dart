@@ -6,4 +6,5 @@ class NavigationConstants {
   static const POST_PAGE ="/PostPage";
   static const REPORT= "/ReportPage";
   static const CHATROOM="/ChatRoom";
+  static const MESSAGE="/Message";
 }
