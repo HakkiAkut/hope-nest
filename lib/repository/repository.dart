@@ -5,9 +5,11 @@ import 'package:hope_nest/models/comment.dart';
 import 'package:hope_nest/models/post.dart';
 import 'package:hope_nest/models/report.dart';
 import 'package:hope_nest/models/chatroom.dart';
+import 'package:hope_nest/models/messages.dart';
 import 'package:hope_nest/models/search.dart';
 import 'package:hope_nest/services/database/base/advert_db_base.dart';
 import 'package:hope_nest/services/database/base/chatRoom_db.dart';
+import 'package:hope_nest/services/database/base/message_db.dart';
 import 'package:hope_nest/services/database/base/blog_db_base.dart';
 import 'package:hope_nest/services/database/base/comments_db_base.dart';
 import 'package:hope_nest/services/database/base/report_db_base.dart';
@@ -29,6 +31,7 @@ import 'package:hope_nest/services/auth/firebase/auth.dart';
 class Repository
     implements
         ChatRoomMethod,
+        MessageMethod,
         AuthMethods,
         UserMethods,
         AdvertMethods,
@@ -196,6 +199,15 @@ class Repository
     }
     return null;
   }
+
+  @override
+  Stream<List<Messages>>? getMessage({required String cid}) {
+    if (dbService == DBService.FIRESTORE) {
+      return _firestore.getMessage( cid : cid);
+    }
+    return null;
+  }
+
 
 
 }
