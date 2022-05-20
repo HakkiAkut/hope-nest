@@ -25,4 +25,9 @@ class ReportVM with ChangeNotifier implements ReportMethods {
       state = AppState.IDLE;
     }
   }
+
+  @override
+  Stream<List<Report>>? getReports() {
+    return _repository.getReports();
+  }
 }

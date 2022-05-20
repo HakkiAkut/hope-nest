@@ -10,7 +10,7 @@ class AppUser {
   String? location;
   String? description;
   Timestamp? registrationDate;
-  bool? isAdmin;
+  bool isAdmin;
   bool? isBanned;
 
   AppUser(
@@ -23,7 +23,7 @@ class AppUser {
       this.location,
       this.description,
       this.registrationDate,
-      this.isAdmin,
+      required this.isAdmin,
         this.isBanned});
 
   Map<String, dynamic> toMap() {

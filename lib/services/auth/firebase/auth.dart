@@ -28,7 +28,7 @@ class AuthService implements AuthMethods {
     print("useer");
     print(user);
     return user != null
-        ? AppUser(uid: user.uid, email: user.email)
+        ? AppUser(uid: user.uid, email: user.email, isAdmin: false)
         : null;
   }
 

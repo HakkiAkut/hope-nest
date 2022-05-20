@@ -13,6 +13,7 @@ import 'package:hope_nest/views/components/styles/input_style.dart';
 import 'package:hope_nest/views/home_page/blog/blog_provider.dart';
 import 'package:hope_nest/views/home_page/home/home_provider.dart';
 import 'package:hope_nest/views/home_page/messages/messages_provider.dart';
+import 'package:hope_nest/views/home_page/report_list_page/report_list_provider.dart';
 import 'package:provider/provider.dart';
 
 class HomeRootPage extends StatefulWidget {
@@ -90,15 +91,14 @@ class _HomeRootPageState extends State<HomeRootPage> {
                   child: TextFormField(
                     style: const TextStyle(color: Colors.black),
                     readOnly: true,
-                    controller: TextEditingController(text:_advertVM.searchAdvert.toString()),
-                    decoration: inputStyle.copyWith(
-                      fillColor: Colors.white
-                    ),
+                    controller: TextEditingController(
+                        text: _advertVM.searchAdvert.toString()),
+                    decoration: inputStyle.copyWith(fillColor: Colors.white),
                     onChanged: (value) {
                       _advertVM.searchAdvert = SearchAdvert(location: value);
                       print(value);
                     },
-                    onTap: (){
+                    onTap: () {
                       SearchFilter().dialog(context: context);
                     },
                   ),
@@ -109,12 +109,14 @@ class _HomeRootPageState extends State<HomeRootPage> {
                 child: Container(
                   margin: EdgeInsets.symmetric(
                       horizontal: DynamicSize.height(context, 0.03)),
-                  child: const TabBarView(
+                  child: TabBarView(
                     //physics: ScrollPhysics(),
                     children: [
-                      HomeProvider(),
-                      BlogProvider(),
-                      MessagesProvider(),
+                      const HomeProvider(),
+                      const BlogProvider(),
+                      _appUserVM.appUser!.isAdmin
+                          ? const ReportListProvider()
+                          : const MessagesProvider(),
                     ],
                   ),
                 ),
@@ -126,72 +128,3 @@ class _HomeRootPageState extends State<HomeRootPage> {
     );
   }
 }
-/*
-*
-*
-* appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(kToolbarHeight),
-          child: Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(25.0))),
-            margin: EdgeInsets.all(DynamicSize.height(context, 0.03)),
-            height: DynamicSize.height(context, 0.06),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 5,
-                  child: Container(
-                    decoration: const BoxDecoration(
-                        color: Palette.NAVBAR_BACKGROUND,
-                        borderRadius: BorderRadius.all(Radius.circular(25.0))),
-                    child: const CustomNavigationBar(),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: GestureDetector(
-                    child: CircularUserImage(
-                      image: _appUserVM.appUser!.image != ""
-                          ? Image.network(
-                              _appUserVM.appUser!.image!,
-                            )
-                          : Image.asset("assets/user/user.png"),
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, NavigationConstants.PROFILE,
-                          arguments: UserType.mainUser);
-                    },
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-        body: Column(
-          children: [
-            Flexible(
-              flex: 1,
-              child: TextField(
-                onChanged: (value) {
-                  print(value);
-                },
-              ),
-            ),
-            Flexible(
-                flex: 7,
-                child: Container(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: DynamicSize.height(context, 0.03)),
-                  child: const TabBarView(
-                    //physics: ScrollPhysics(),
-                    children: [
-                      HomeProvider(),
-                      BlogProvider(),
-                      MessagesProvider(),
-                    ],
-                  ),
-                )),
-          ],
-        ),
-*
-* */

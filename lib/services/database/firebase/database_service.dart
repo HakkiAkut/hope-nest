@@ -177,5 +177,16 @@ class UserDatabaseService
         .toList());
   }
 
+  @override
+  Stream<List<Report>>? getReports() {
+    Stream<QuerySnapshot> qp = _firestore
+        .collection('report')
+        .orderBy('date', descending: true)
+        .snapshots();
+    return qp.map((docs) => docs.docs
+        .map((doc) => Report.fromMap(doc.data() as Map<String, dynamic>))
+        .toList());
+  }
+
 
 }

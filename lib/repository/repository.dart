@@ -210,4 +210,12 @@ class Repository
     }
     return null;
   }
+
+  @override
+  Stream<List<Report>>? getReports() {
+    if (dbService == DBService.FIRESTORE) {
+      return _firestore.getReports();
+    }
+    return null;
+  }
 }
