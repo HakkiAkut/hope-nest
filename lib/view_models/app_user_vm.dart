@@ -57,6 +57,10 @@ class AppUserVM
       state = AppState.BUSY;
       _appUser = await _repository.currentUser();
       if (_appUser != null) {
+        if(_appUser?.isBanned == true){
+          signOut();
+          // TODO: add ban message
+        }
         return _appUser;
       } else {
         return null;

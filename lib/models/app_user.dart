@@ -10,6 +10,8 @@ class AppUser {
   String? location;
   String? description;
   Timestamp? registrationDate;
+  bool? isAdmin;
+  bool? isBanned;
 
   AppUser(
       {required this.uid,
@@ -20,7 +22,9 @@ class AppUser {
       this.image,
       this.location,
       this.description,
-      this.registrationDate});
+      this.registrationDate,
+      this.isAdmin,
+        this.isBanned});
 
   Map<String, dynamic> toMap() {
     return {
@@ -33,6 +37,8 @@ class AppUser {
       "location": location,
       "description": description ?? "An animal lover",
       "registration_date": registrationDate ?? FieldValue.serverTimestamp(),
+      "isAdmin":isAdmin,
+      "isBanned":isBanned
     };
   }
 
@@ -47,6 +53,8 @@ class AppUser {
       location: map['location'] as String,
       description: map['description'] as String,
       registrationDate: map['registration_date'] as Timestamp,
+      isAdmin: map['isAdmin'] as bool,
+      isBanned: map['isBanned'] as bool,
     );
   }
 }

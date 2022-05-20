@@ -37,7 +37,8 @@ class Repository
         AdvertMethods,
         BlogMethods,
         CommentMethods,
-        StorageMethods,ReportMethods {
+        StorageMethods,
+        ReportMethods {
   final AuthService _auth = serviceLocator<AuthService>();
   final UserDatabaseService _firestore = serviceLocator<UserDatabaseService>();
   final StorageService _storage = serviceLocator<StorageService>();
@@ -84,6 +85,8 @@ class Repository
         appUser.phone = phone;
         appUser.location = location;
         appUser.description = "An animal lover";
+        appUser.isBanned = false;
+        appUser.isAdmin = false;
         await setUser(appUser: appUser);
         return await currentUser();
       }
@@ -195,7 +198,7 @@ class Repository
   @override
   Stream<List<ChatRoom>>? getChatRoom({required String id}) {
     if (dbService == DBService.FIRESTORE) {
-      return _firestore.getChatRoom( id : id);
+      return _firestore.getChatRoom(id: id);
     }
     return null;
   }
@@ -203,11 +206,8 @@ class Repository
   @override
   Stream<List<Messages>>? getMessage({required String cid}) {
     if (dbService == DBService.FIRESTORE) {
-      return _firestore.getMessage( cid : cid);
+      return _firestore.getMessage(cid: cid);
     }
     return null;
   }
-
-
-
 }
