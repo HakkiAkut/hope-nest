@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
+import 'package:hope_nest/models/post.dart';
 import 'package:hope_nest/models/report.dart';
 import 'package:hope_nest/util/constants/palette.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
+import 'package:hope_nest/util/enum/report_type.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/view_models/report_vm.dart';
@@ -18,16 +20,21 @@ import 'package:provider/provider.dart';
 class ReportPage extends StatefulWidget {
   final AppUser? reportUser;
   final Advert? reportAdvert;
+  final Post? reportPost;
 
-  const ReportPage({Key? key, this.reportAdvert, this.reportUser})
-      : super(key: key);
+  const ReportPage({
+    Key? key,
+    this.reportAdvert,
+    this.reportUser,
+    this.reportPost,
+  }) : super(key: key);
 
   @override
   _ReportPageState createState() => _ReportPageState();
 }
 
 class _ReportPageState extends State<ReportPage> {
-  late bool isUser;
+  late ReportType reportType;
   late Report _report;
 
   var key1 = GlobalKey<FormFieldState>();
@@ -36,10 +43,18 @@ class _ReportPageState extends State<ReportPage> {
   @override
   void initState() {
     super.initState();
-    isUser = widget.reportUser != null ? true : false;
+    reportType = widget.reportUser != null
+        ? ReportType.USER
+        : (widget.reportAdvert != null ? ReportType.ADVERT : ReportType.POST);
     _report = Report(
-        reportType: isUser ? "user" : "advert",
-        reportedId: isUser ? widget.reportUser!.uid : widget.reportAdvert!.id,
+        reportType: reportType == ReportType.USER
+            ? "user"
+            : (reportType == ReportType.ADVERT ? "advert" : "post"),
+        reportedId: reportType == ReportType.USER
+            ? widget.reportUser!.uid
+            : (reportType == ReportType.ADVERT
+                ? widget.reportAdvert!.id
+                : widget.reportPost!.id),
         uid: "",
         id: "",
         date: Timestamp.now(),
@@ -55,142 +70,155 @@ class _ReportPageState extends State<ReportPage> {
       decoration: backgroundStyle,
       child: Scaffold(
         backgroundColor: Colors.transparent,
-      appBar: const CustomAppBar(
-        text: "Cancel",
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: CustomFloatingActionButton(
-        text: "Report",
-        onPressed: () async {
-          _report.id = Timestamp.now().millisecondsSinceEpoch.toString() +
-              _appUserVM.appUser!.uid;
-          _report.uid = _appUserVM.appUser!.uid;
-          print("pressed");
-          if (key1.currentState!.validate() && key2.currentState!.validate()) {
-            key1.currentState!.save();
-            key2.currentState!.save();
-            print("validated");
-            try {
-              bool? x = await _reportVM.setReport(report: _report);
-              if (x != null && x) {
-                print("reported");
-                Navigator.pop(context);
+        appBar: const CustomAppBar(
+          text: "Cancel",
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: CustomFloatingActionButton(
+          text: "Report",
+          onPressed: () async {
+            _report.id = Timestamp.now().millisecondsSinceEpoch.toString() +
+                _appUserVM.appUser!.uid;
+            _report.uid = _appUserVM.appUser!.uid;
+            print("pressed");
+            if (key1.currentState!.validate() &&
+                key2.currentState!.validate()) {
+              key1.currentState!.save();
+              key2.currentState!.save();
+              print("validated");
+              try {
+                bool? x = await _reportVM.setReport(report: _report);
+                if (x != null && x) {
+                  print("reported");
+                  Navigator.pop(context);
+                }
+              } catch (e) {
+                debugPrint("hatalı");
+                debugPrint(e.toString());
               }
-            } catch (e) {
-              debugPrint("hatalı");
-              debugPrint(e.toString());
+            } else {
+              print("hata var");
             }
-          } else {
-            print("hata var");
-          }
-        },
-      ),
-      body: Center(
-        child: Container(
-          margin: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text(
-                "Report Page",
-                style: TextStyle(fontSize: 24, color: Palette.BOLD_COLOR),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                isUser ? "User Information " : "Advert Information",
-                style: const TextStyle(fontSize: 18, color: Palette.INPUT_BOX),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  Text(
-                    isUser ? "name: " : "title: ",
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                  Text(
-                    isUser
-                        ? "${widget.reportUser!.name}"
-                        : "${widget.reportAdvert!.name}",
-                    style: const TextStyle(fontSize: 18),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                children: [
-                  const Text(
-                    "ID: ",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  Text(
-                    isUser ? widget.reportUser!.uid : widget.reportAdvert!.id,
-                    style: const TextStyle(fontSize: 18),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                "Report Information ",
-                style: TextStyle(fontSize: 18, color: Palette.INPUT_BOX),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: DynamicSize.height(context, 0.02)),
-                child: TextFormField(
-                  maxLines: 1,
-                  key: key1,
-                  onChanged: (String s) => _report.title = s,
-                  style: normalTextStyle,
-                  validator: (_value) {
-                    if (_value!.length < 1) {
-                      return "title can not be null!";
-                    } else {
-                      return null;
-                    }
-                  },
-                  decoration: inputStyle.copyWith(
-                    hintText: 'Title',
+          },
+        ),
+        body: Center(
+          child: Container(
+            margin: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Report Page",
+                  style: TextStyle(fontSize: 24, color: Palette.BOLD_COLOR),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  reportType == ReportType.USER
+                      ? "User Information "
+                      : (reportType == ReportType.ADVERT
+                          ? "Advert Information"
+                          : "Post Information"),
+                  style:
+                      const TextStyle(fontSize: 18, color: Palette.INPUT_BOX),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      reportType == ReportType.USER ? "name: " : "title: ",
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      reportType == ReportType.USER
+                          ? "${widget.reportUser!.name}"
+                          : (reportType == ReportType.ADVERT
+                              ? "${widget.reportAdvert!.name}"
+                              : "${widget.reportPost!.title}"),
+                      style: const TextStyle(fontSize: 18),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    const Text(
+                      "ID: ",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Text(
+                      reportType == ReportType.USER
+                          ? widget.reportUser!.uid
+                          : (reportType == ReportType.ADVERT
+                              ? widget.reportAdvert!.id
+                              : widget.reportPost!.id),
+                      style: const TextStyle(fontSize: 18),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  "Report Information ",
+                  style: TextStyle(fontSize: 18, color: Palette.INPUT_BOX),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: DynamicSize.height(context, 0.02)),
+                  child: TextFormField(
+                    maxLines: 1,
+                    key: key1,
+                    onChanged: (String s) => _report.title = s,
+                    style: normalTextStyle,
+                    validator: (_value) {
+                      if (_value!.length < 1) {
+                        return "title can not be null!";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: inputStyle.copyWith(
+                      hintText: 'Title',
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(
-                    horizontal: DynamicSize.height(context, 0.02)),
-                child: TextFormField(
-                  maxLines: 6,
-                  key: key2,
-                  onChanged: (String s) => _report.description = s,
-                  style: normalTextStyle,
-                  validator: (_value) {
-                    if (_value!.length < 1) {
-                      return "description can not be null!";
-                    } else {
-                      return null;
-                    }
-                  },
-                  decoration: inputStyle.copyWith(
-                    hintText: 'Description',
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: DynamicSize.height(context, 0.02)),
+                  child: TextFormField(
+                    maxLines: 6,
+                    key: key2,
+                    onChanged: (String s) => _report.description = s,
+                    style: normalTextStyle,
+                    validator: (_value) {
+                      if (_value!.length < 1) {
+                        return "description can not be null!";
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: inputStyle.copyWith(
+                      hintText: 'Description',
+                    ),
                   ),
                 ),
-              ),
-              _reportVM.state == AppState.BUSY
-                  ? const CircularProgressIndicator()
-                  : const SizedBox(),
-            ],
+                _reportVM.state == AppState.BUSY
+                    ? const CircularProgressIndicator()
+                    : const SizedBox(),
+              ],
+            ),
           ),
         ),
       ),
-    ),);
+    );
   }
 }

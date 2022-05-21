@@ -1,0 +1,1 @@
+enum ReportType { USER, ADVERT, POST }

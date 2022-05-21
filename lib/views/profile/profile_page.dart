@@ -8,6 +8,7 @@ import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/advert_vm.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/views/components/app_bar/app_bar.dart';
+import 'package:hope_nest/views/components/appbar_action_widget/appbar_action_widget.dart';
 import 'package:hope_nest/views/components/image_container/image_container.dart';
 import 'package:hope_nest/views/components/styles/background_style.dart';
 import 'package:hope_nest/views/home_page/home/home_view.dart';
@@ -40,23 +41,19 @@ class _ProfilePageState extends State<ProfilePage> {
         appBar: CustomAppBar(
           text: "Return Back",
           actionWidget: widget.userType == UserType.mainUser
-              ? GestureDetector(
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    decoration: BoxDecoration(color: Palette.MAIN_COLOR_ORANGE,
-                    borderRadius: BorderRadius.circular(25)
-                    ),
-                    child: const Text(
-                      "Log Out",
-                      style: TextStyle(color: Palette.BACKGROUND),
-                    ),
-                  ),
-                  onTap: () {
+              ? AppBarActionWidget(
+                  onPressed: () {
                     _appUserVM.signOut();
                     Navigator.pop(context);
-                    //Navigator.pushReplacementNamed(context, NavigationConstants.ROOT);
-                  })
-              : Container(),
+                  },
+                  text: "Log Out")
+              : AppBarActionWidget(
+                  onPressed: () {
+                    Navigator.pushNamed(context, NavigationConstants.REPORT,
+                        arguments: _appUser);
+                  },
+                  text: "report",
+                ),
         ),
         body: SingleChildScrollView(
           child: Container(

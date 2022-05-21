@@ -8,6 +8,7 @@ import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/views/components/advert_info_container/advert_info_container.dart';
 import 'package:hope_nest/views/components/app_bar/app_bar.dart';
+import 'package:hope_nest/views/components/appbar_action_widget/appbar_action_widget.dart';
 import 'package:hope_nest/views/components/image_container/image_container.dart';
 import 'package:hope_nest/views/components/owner_info_tile/owner_info_tile.dart';
 import 'package:hope_nest/views/components/styles/background_style.dart';
@@ -33,25 +34,14 @@ class _AdvertViewState extends State<AdvertView> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: CustomAppBar(
-          text: "Return Back",
-          actionWidget: GestureDetector(
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              margin: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: Palette.MAIN_COLOR_ORANGE,
-                  borderRadius: BorderRadius.circular(25)),
-              child: const Text(
-                "report",
-                style: TextStyle(color: Palette.BACKGROUND),
-              ),
-            ),
-            onTap: () {
-              Navigator.pushNamed(context, NavigationConstants.REPORT,
-                  arguments: widget.advert);
-            },
-          ),
-        ),
+            text: "Return Back",
+            actionWidget: AppBarActionWidget(
+              onPressed: () {
+                Navigator.pushNamed(context, NavigationConstants.REPORT,
+                    arguments: widget.advert);
+              },
+              text: "report",
+            )),
         body: Column(
           children: [
             ImageContainer(
