@@ -84,7 +84,7 @@ class _ReportAdminPageState extends State<ReportAdminPage> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: widget.report.isDone != true
             ? CustomFloatingActionButton(
-                text: "Report",
+                text: "Suspend",
                 onPressed: () async {
                   print("pressed");
                   if (key1.currentState!.validate()) {

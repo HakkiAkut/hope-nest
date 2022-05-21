@@ -212,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
         onChanged: (String s) => _pwd = s,
         style: normalTextStyle,
         validator: (_value) {
-          if (_value!.length < 1) {
+          if (_value == null || _value.length < 1) {
             return "password can not be null!";
           } else {
             return null;
@@ -263,7 +263,7 @@ class _LoginPageState extends State<LoginPage> {
         onChanged: (String s) => _name = s,
         style: normalTextStyle,
         validator: (_value) {
-          if (_value!.length < 1) {
+          if (_value == null || _value.length < 1) {
             return "name can not be null!";
           } else {
             return null;
@@ -287,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
         onChanged: (String s) => _surname = s,
         style: normalTextStyle,
         validator: (_value) {
-          if (_value!.length < 1) {
+          if (_value == null || _value.length < 1) {
             return "surname can not be null!";
           } else {
             return null;
@@ -311,7 +311,7 @@ class _LoginPageState extends State<LoginPage> {
         onChanged: (String s) => _phone = s,
         style: normalTextStyle,
         validator: (_value) {
-          if (_value!.length < 1) {
+          if (_value == null || _value.length < 1) {
             return "phone can not be null!";
           } else {
             return null;
@@ -335,7 +335,7 @@ class _LoginPageState extends State<LoginPage> {
         onChanged: (String s) => _location = s,
         style: normalTextStyle,
         validator: (_value) {
-          if (_value!.length < 1) {
+          if (_value == null || _value.length < 1) {
             return "location can not be null!";
           } else {
             return null;

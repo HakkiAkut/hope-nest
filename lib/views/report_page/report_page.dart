@@ -176,7 +176,7 @@ class _ReportPageState extends State<ReportPage> {
                     onChanged: (String s) => _report.title = s,
                     style: normalTextStyle,
                     validator: (_value) {
-                      if (_value!.length < 1) {
+                      if (_value == null || _value.length < 1) {
                         return "title can not be null!";
                       } else {
                         return null;
@@ -199,7 +199,7 @@ class _ReportPageState extends State<ReportPage> {
                     onChanged: (String s) => _report.description = s,
                     style: normalTextStyle,
                     validator: (_value) {
-                      if (_value!.length < 1) {
+                      if (_value == null || _value.length < 1) {
                         return "description can not be null!";
                       } else {
                         return null;
