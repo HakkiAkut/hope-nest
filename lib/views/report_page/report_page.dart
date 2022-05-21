@@ -47,9 +47,8 @@ class _ReportPageState extends State<ReportPage> {
         ? ReportType.USER
         : (widget.reportAdvert != null ? ReportType.ADVERT : ReportType.POST);
     _report = Report(
-        reportType: reportType == ReportType.USER
-            ? "user"
-            : (reportType == ReportType.ADVERT ? "advert" : "post"),
+        conclusion: "",
+        reportType: reportType,
         reportedId: reportType == ReportType.USER
             ? widget.reportUser!.uid
             : (reportType == ReportType.ADVERT
@@ -87,7 +86,7 @@ class _ReportPageState extends State<ReportPage> {
               key2.currentState!.save();
               print("validated");
               try {
-                bool? x = await _reportVM.setReport(report: _report);
+                bool? x = await _reportVM.setReport(report: _report,isSuspended: false);
                 if (x != null && x) {
                   print("reported");
                   Navigator.pop(context);

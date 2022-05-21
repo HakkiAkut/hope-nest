@@ -9,12 +9,12 @@ class BlogProvider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _postsVM = Provider.of<BlogVM>(context);
     return StreamProvider<List<Post>>.value(
-      value: BlogVM().getPosts(),
+      value: _postsVM.getPosts(),
       initialData: const [],
       child: const BlogView(),
       updateShouldNotify: (prev, now) => true,
     );
-
   }
 }

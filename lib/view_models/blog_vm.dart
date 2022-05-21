@@ -30,4 +30,27 @@ class BlogVM with ChangeNotifier implements BlogMethods, StorageMethods {
       {required String uid, required File uploadedFile}) {
     return _repository.uploadFile(uid: uid, uploadedFile: uploadedFile);
   }
+
+  @override
+  Future<Post?> getPostByID({required String id}) async {
+    try{
+      state = AppState.BUSY;
+      return await _repository.getPostByID(id: id);
+    }
+    finally{
+      state = AppState.IDLE;
+    }
+
+  }
+
+  @override
+  Future<bool?> setPost({required Post post}) async {
+    try{
+      state = AppState.BUSY;
+      return await _repository.setPost(post: post);
+    } finally {
+      state = AppState.IDLE;
+    }
+
+  }
 }

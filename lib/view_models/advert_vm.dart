@@ -63,4 +63,14 @@ class AdvertVM with ChangeNotifier implements AdvertMethods, StorageMethods {
     }
     return _repository.setAdvert(advert: advert);
   }
+
+  @override
+  Future<Advert?> getAdvertByID({required String id}) async {
+    try {
+      state = AppState.BUSY;
+      return await _repository.getAdvertByID(id: id);
+    } finally {
+      state = AppState.IDLE;
+    }
+  }
 }

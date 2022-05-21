@@ -187,9 +187,9 @@ class Repository
   }
 
   @override
-  Future<bool?> setReport({required Report report}) async {
+  Future<bool?> setReport({required Report report,required bool isSuspended}) async {
     if (dbService == DBService.FIRESTORE) {
-      bool? ret = await _firestore.setReport(report: report);
+      bool? ret = await _firestore.setReport(report: report,isSuspended: isSuspended);
       return ret;
     }
     return null;
@@ -215,6 +215,30 @@ class Repository
   Stream<List<Report>>? getReports() {
     if (dbService == DBService.FIRESTORE) {
       return _firestore.getReports();
+    }
+    return null;
+  }
+
+  @override
+  Future<Advert?> getAdvertByID({required String id}) async {
+    if (dbService == DBService.FIRESTORE) {
+      return await _firestore.getAdvertByID(id: id);
+    }
+    return null;
+  }
+
+  @override
+  Future<Post?> getPostByID({required String id}) async {
+    if (dbService == DBService.FIRESTORE) {
+      return await _firestore.getPostByID(id: id);
+    }
+    return null;
+  }
+
+  @override
+  Future<bool?> setPost({required Post post}) async {
+    if (dbService == DBService.FIRESTORE) {
+      return await _firestore.setPost(post: post);
     }
     return null;
   }

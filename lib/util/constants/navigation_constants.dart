@@ -5,6 +5,7 @@ class NavigationConstants {
   static const ADVERT = "/Advert";
   static const POST_PAGE ="/PostPage";
   static const REPORT= "/ReportPage";
+  static const REPORT_ADMIN= "/ReportAdminPage";
   static const CHATROOM="/ChatRoom";
   static const MESSAGE="/Message";
 }

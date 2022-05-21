@@ -130,6 +130,10 @@ class AppUserVM
       state = AppState.IDLE;
     }
   }
+  @override
+  Future<AppUser?> getUserByID({required String id}) async {
+      return await _repository.getUser(id: id);
+  }
 
   void getAdvertOwner({required String id}) async {
     if (_advertOwner == null || _advertOwner!.uid != id) {

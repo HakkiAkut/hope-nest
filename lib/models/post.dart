@@ -7,6 +7,7 @@ class Post {
   String? title;
   Timestamp date;
   String? url;
+  bool? isBanned;
 
   Post(
       {required this.id,
@@ -14,7 +15,8 @@ class Post {
       required this.date,
       this.description,
       this.url,
-      this.title});
+      this.title,
+      this.isBanned});
 
   Map<String, dynamic> toMap() {
     return {
@@ -24,6 +26,7 @@ class Post {
       "url": url,
       "description": description,
       "title": title,
+      "isBanned": isBanned
     };
   }
 
@@ -35,6 +38,7 @@ class Post {
       url: map['url'] as String,
       description: map['description'] as String,
       title: map['title'] as String,
+      isBanned: map['isBanned'] as bool,
     );
   }
 }

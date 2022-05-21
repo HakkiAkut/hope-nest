@@ -15,9 +15,15 @@ import 'package:hope_nest/services/database/base/report_db_base.dart';
 import 'package:hope_nest/services/database/base/chatRoom_db.dart';
 import 'package:hope_nest/services/database/base/message_db.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
+import 'package:hope_nest/util/enum/report_type.dart';
 
 class UserDatabaseService
-    implements UserMethods, AdvertMethods, BlogMethods, CommentMethods,ReportMethods {
+    implements
+        UserMethods,
+        AdvertMethods,
+        BlogMethods,
+        CommentMethods,
+        ReportMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -26,14 +32,13 @@ class UserDatabaseService
     final User? user = auth.currentUser;
     final userid = user?.uid;
     return userid;
-
   }
 
   @override
   Future<AppUser?> getUser({required String id}) async {
     try {
       DocumentSnapshot user =
-      await _firestore.collection("users").doc(id).get();
+          await _firestore.collection("users").doc(id).get();
       Map<String, dynamic> userData = user.data() as Map<String, dynamic>;
       AppUser newUser = AppUser.fromMap(userData);
       return newUser;
@@ -72,17 +77,15 @@ class UserDatabaseService
   @override
   Stream<List<Advert>> getFilteredAdverts(
       {required SearchAdvert searchAdvert}) {
-    Query query= _firestore.collection('adverts');
-    if(searchAdvert.location !='' && searchAdvert.location != null){
-      query= query.where('location',isEqualTo: searchAdvert.location);
+    Query query = _firestore.collection('adverts');
+    if (searchAdvert.location != '' && searchAdvert.location != null) {
+      query = query.where('location', isEqualTo: searchAdvert.location);
     }
-    if(searchAdvert.kind !='' && searchAdvert.kind != null){
-      query= query.where('kind',isEqualTo: searchAdvert.kind);
+    if (searchAdvert.kind != '' && searchAdvert.kind != null) {
+      query = query.where('kind', isEqualTo: searchAdvert.kind);
     }
-    Stream<QuerySnapshot> qp = query
-        .orderBy('date', descending: true)
-        .limit(10)
-        .snapshots();
+    Stream<QuerySnapshot> qp =
+        query.orderBy('date', descending: true).limit(10).snapshots();
     return qp.map((docs) => docs.docs
         .map((doc) => Advert.fromMap(doc.data() as Map<String, dynamic>))
         .toList());
@@ -138,12 +141,27 @@ class UserDatabaseService
   }
 
   @override
-  Future<bool?> setReport({required Report report}) async {
+  Future<bool?> setReport(
+      {required Report report, required bool isSuspended}) async {
     try {
       await _firestore
           .collection("report")
           .doc(report.id)
-          .set(report.toMap());
+          .set(report.toMap())
+          .then((value) async {
+        if (isSuspended) {
+          if (report.reportType == ReportType.USER) {
+            report.reportUser!.isBanned = true;
+            await setUser(appUser: report.reportUser!);
+          } else if (report.reportType == ReportType.ADVERT) {
+            report.reportAdvert!.isBanned = true;
+            await setAdvert(advert: report.reportAdvert!);
+          } else {
+            report.reportPost!.isBanned = true;
+            await setPost(post: report.reportPost!);
+          }
+        }
+      });
       return true;
     } catch (e) {
       print(e.toString());
@@ -155,7 +173,7 @@ class UserDatabaseService
   Stream<List<ChatRoom>>? getChatRoom({required String id}) {
     Stream<QuerySnapshot> qp = _firestore
         .collection('chatRoom')
-        .where("users", arrayContains: id)   //users firebase deki array
+        .where("users", arrayContains: id) //users firebase deki array
         .orderBy('time', descending: true)
         .snapshots();
     return qp.map((docs) => docs.docs
@@ -173,7 +191,7 @@ class UserDatabaseService
         .orderBy('time', descending: true)
         .snapshots();
     return q.map((docs) => docs.docs
-        .map((doc) => Messages.fromMap(doc.data() as Map<String,dynamic>))
+        .map((doc) => Messages.fromMap(doc.data() as Map<String, dynamic>))
         .toList());
   }
 
@@ -188,5 +206,42 @@ class UserDatabaseService
         .toList());
   }
 
+  @override
+  Future<Advert?> getAdvertByID({required String id}) async {
+    try {
+      DocumentSnapshot advert =
+          await _firestore.collection("adverts").doc(id).get();
+      Map<String, dynamic> advertData = advert.data() as Map<String, dynamic>;
+      Advert newAdvert = Advert.fromMap(advertData);
+      return newAdvert;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
+  @override
+  Future<Post?> getPostByID({required String id}) async {
+    try {
+      DocumentSnapshot post =
+          await _firestore.collection("posts").doc(id).get();
+      Map<String, dynamic> postData = post.data() as Map<String, dynamic>;
+      Post newPost = Post.fromMap(postData);
+      return newPost;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  @override
+  Future<bool?> setPost({required Post post}) async {
+    try {
+      await _firestore.collection("posts").doc(post.id).set(post.toMap());
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 }

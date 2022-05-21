@@ -14,6 +14,7 @@ class Advert {
   bool? vaccines;
   bool? training;
   String? location;
+  bool? isBanned;
 
   Advert(
       {required this.id,
@@ -28,7 +29,8 @@ class Advert {
       this.weight,
       this.vaccines,
       this.training,
-      this.location
+      this.location,
+        this.isBanned
       });
 
   Map<String, dynamic> toMap() {
@@ -46,6 +48,7 @@ class Advert {
       "vaccines": vaccines,
       "training": training,
       "location":location,
+      "isBanned":isBanned,
     };
   }
 
@@ -64,6 +67,7 @@ class Advert {
       vaccines: map['vaccines'] as bool,
       training: map['training'] as bool,
       location: map['location'] as String,
+      isBanned: map['isBanned'] as bool,
     );
   }
 }

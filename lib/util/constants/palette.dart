@@ -12,5 +12,7 @@ class Palette {
   static const TEXT_COLOR = Colors.black;
   static const NAVBAR_BACKGROUND = Color(0xFFD1BC8E);
   static const NAVBAR_BACKGROUND_HOVER = Color(0xFF39B89E);
+  static const DONE = Color(0x5921D2AD);
   static const NAVBAR_BACKGROUND_HOVER_TEXT = Colors.white;
+  static const TRANSPARENT = Colors.transparent;
 }
