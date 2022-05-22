@@ -12,6 +12,7 @@ import 'package:hope_nest/views/components/custom_floating_action_button/custom_
 import 'package:hope_nest/views/components/styles/background_style.dart';
 import 'package:hope_nest/views/components/styles/input_style.dart';
 import 'package:hope_nest/views/components/styles/text_style.dart';
+import 'package:hope_nest/views/components/toast_message/toast_message.dart';
 import 'package:provider/provider.dart';
 
 class ReportAdminPage extends StatefulWidget {
@@ -63,8 +64,8 @@ class _ReportAdminPageState extends State<ReportAdminPage> {
                       print("validated");
                       try {
                         widget.report.isDone = true;
-                        bool? x =
-                            await _reportVM.setReport(report: widget.report,isSuspended: false);
+                        bool? x = await _reportVM.setReport(
+                            report: widget.report, isSuspended: false);
                         if (x != null && x) {
                           print("discarded");
                           Navigator.pop(context);
@@ -92,11 +93,13 @@ class _ReportAdminPageState extends State<ReportAdminPage> {
                     print("validated");
                     try {
                       widget.report.isDone = true;
-                      bool? x =
-                          await _reportVM.setReport(report: widget.report,isSuspended: true);
+                      bool? x = await _reportVM.setReport(
+                          report: widget.report, isSuspended: true);
                       if (x != null && x) {
-                        print("reported");
+                        getDoneMessage( text: "successful");
                         Navigator.pop(context);
+                      } else {
+                        getErrorMessage(text: "an error occurred");
                       }
                     } catch (e) {
                       debugPrint("hatalı");

@@ -20,7 +20,7 @@ class ReportVM with ChangeNotifier implements ReportMethods {
   Future<bool?> setReport({required Report report,required bool isSuspended}) async {
     try {
       state = AppState.BUSY;
-      return _repository.setReport(report: report,isSuspended:isSuspended);
+      return await _repository.setReport(report: report,isSuspended:isSuspended);
     } finally {
       state = AppState.IDLE;
     }

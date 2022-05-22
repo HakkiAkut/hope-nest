@@ -86,7 +86,9 @@ class _ReportPageState extends State<ReportPage> {
               key2.currentState!.save();
               print("validated");
               try {
+                print("not waits");
                 bool? x = await _reportVM.setReport(report: _report,isSuspended: false);
+                print(x);
                 if (x != null && x) {
                   print("reported");
                   Navigator.pop(context);

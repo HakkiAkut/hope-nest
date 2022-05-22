@@ -7,6 +7,7 @@ import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
 import 'package:hope_nest/util/methods/pick_image.dart';
 import 'package:hope_nest/view_models/advert_vm.dart';
+import 'package:hope_nest/views/components/toast_message/toast_message.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class SendAdvert {
@@ -187,16 +188,23 @@ class SendAdvert {
               ),
               actions: <Widget>[
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       advert.uid = appUser.uid;
+                      advert.isBanned = false;
+                      advert.location = appUser.location;
                       advert.id = advert.uid.substring(0, 5) +
                           advert.date.seconds.toString();
                       postImage != null
                           ? advert.url = postImage.path
                           : advert.url = "";
-                      AdvertVM().setAdvert(advert: advert);
+                      bool? ret = await AdvertVM().setAdvert(advert: advert);
+                      if(ret != null || ret != false){
+                        getDoneMessage( text: "successful");
+                      } else {
+                        getErrorMessage(text: "an error occurred!");
+                      }
                       Navigator.pop(context);
                     }
                   },

@@ -16,6 +16,7 @@ import 'package:hope_nest/services/database/base/chatRoom_db.dart';
 import 'package:hope_nest/services/database/base/message_db.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
 import 'package:hope_nest/util/enum/report_type.dart';
+import 'package:hope_nest/views/components/toast_message/toast_message.dart';
 
 class UserDatabaseService
     implements
@@ -150,6 +151,7 @@ class UserDatabaseService
           .set(report.toMap())
           .then((value) async {
         if (isSuspended) {
+          getDoneMessage(text: "successful");
           if (report.reportType == ReportType.USER) {
             report.reportUser!.isBanned = true;
             await setUser(appUser: report.reportUser!);
@@ -164,6 +166,7 @@ class UserDatabaseService
       });
       return true;
     } catch (e) {
+      getErrorMessage(text: "an error occurred: ${e.toString()}");
       print(e.toString());
       return false;
     }

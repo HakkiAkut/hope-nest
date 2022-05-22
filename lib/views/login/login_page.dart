@@ -6,6 +6,7 @@ import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/views/components/styles/button_style.dart';
 import 'package:hope_nest/views/components/styles/login_input_style.dart';
 import 'package:hope_nest/views/components/styles/text_style.dart';
+import 'package:hope_nest/views/components/toast_message/toast_message.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -161,15 +162,10 @@ class _LoginPageState extends State<LoginPage> {
       child: ElevatedButton(
         style: buttonStyle,
         onPressed: () async {
-          print("pressed");
           if (key1.currentState!.validate() && key2.currentState!.validate()) {
             key1.currentState!.save();
             key2.currentState!.save();
-            print("validated");
             try {
-              print("login attempt");
-              print(LoginState.values[_appUserVM.loginState.index].toString());
-              print(_appUserVM.loginState == LoginState.SIGNIN);
               _appUserVM.loginState == LoginState.SIGNIN
                   ? await _appUserVM.signInWithEmail(email: _email, pwd: _pwd)
                   : await _appUserVM.signUpWithEmail(
@@ -179,12 +175,12 @@ class _LoginPageState extends State<LoginPage> {
                       surname: _surname,
                       phone: _phone,
                       location: _location);
+              getDoneMessage(text: "successful!");
             } catch (e) {
-              debugPrint("hatalı");
-              debugPrint(e.toString());
+              getErrorMessage(text: "an error occurred! "+ e.toString());
             }
           } else {
-            print("hata var");
+            getErrorMessage(text: "an error occurred! please check validation");
           }
         },
         child: _appUserVM.loginState == LoginState.SIGNIN
