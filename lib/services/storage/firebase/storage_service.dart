@@ -11,10 +11,11 @@ class StorageService implements StorageMethods {
   @override
   Future<String?> uploadFile(
       {required String uid, required File uploadedFile}) async {
+    String time = "${DateTime.now().millisecondsSinceEpoch}";
     _reference = _firebaseStorage
         .ref()
         .child(uid)
-        .child(FieldValue.serverTimestamp().toString());
+        .child(time);
     UploadTask uploadTask = _reference.putFile(uploadedFile);
     var url;
     try {
