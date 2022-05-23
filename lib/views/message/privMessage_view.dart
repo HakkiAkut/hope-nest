@@ -64,11 +64,10 @@ class _MessagesViewState extends State<PrivMessage_View> {
               message=Messages(from:_appUserVM.appUser!.uid, to: widget.chatroom.users[0]==_appUserVM.appUser!.uid ? widget.chatroom.users[1] : widget.chatroom.users[0],
           message: msg, id: _appUserVM.appUser!.uid + DateTime.now().millisecondsSinceEpoch.toString() );
           await messagevm.setMessage(cid: widget.chatroom.id, message:message);
+          print(message.id);
           textFieldController.clear();
           msg='';
             }
-
-
           } ,
           child: Text('SEND', style: kGonderButtonTextStyle,),
           )
