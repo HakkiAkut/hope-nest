@@ -24,10 +24,28 @@ class SearchPost {
   String? id;
   String? title;
 
-  SearchPost({this.id, this.title,});
+  SearchPost({
+    this.id,
+    this.title,
+  });
 
   @override
   String toString() {
     return title ?? "";
+  }
+}
+
+class SearchReport {
+  String? id;
+  bool? isDone;
+
+  SearchReport({
+    this.id,
+    this.isDone,
+  });
+
+  @override
+  String toString() {
+    return isDone != null ? "is done: " + isDone.toString() : "";
   }
 }

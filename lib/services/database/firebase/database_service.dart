@@ -107,15 +107,18 @@ class UserDatabaseService
         .toList());
   }
 
-  Stream<List<Post>> getFilteredPosts(
-      {required SearchPost searchPost}) {
+  Stream<List<Post>> getFilteredPosts({required SearchPost searchPost}) {
+    print(searchPost.title);
     Query query =
-    _firestore.collection('posts').where("isBanned", isEqualTo: false);
+        _firestore.collection('posts').where("isBanned", isEqualTo: false);
     if (searchPost.title != '' && searchPost.title != null) {
-      query = query.where('title', isEqualTo: searchPost.title);
+      query = query
+          .where("title", isGreaterThanOrEqualTo: searchPost.title)
+          .where("title", isLessThan: searchPost.title! + 'z')
+          .orderBy("title", descending: true);
     }
     Stream<QuerySnapshot> qp =
-    query.orderBy('date', descending: true).limit(10).snapshots();
+        query.orderBy('date', descending: true).limit(10).snapshots();
     return qp.map((docs) => docs.docs
         .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
         .toList());
@@ -220,6 +223,19 @@ class UserDatabaseService
         .collection('report')
         .orderBy('date', descending: true)
         .snapshots();
+    return qp.map((docs) => docs.docs
+        .map((doc) => Report.fromMap(doc.data() as Map<String, dynamic>))
+        .toList());
+  }
+
+  Stream<List<Report>> getFilteredReports(
+      {required SearchReport searchReport}) {
+    Query query = _firestore.collection('report');
+    if (searchReport.isDone != null) {
+      query = query.where('isDone', isEqualTo: searchReport.isDone);
+    }
+    Stream<QuerySnapshot> qp =
+        query.orderBy('date', descending: true).limit(10).snapshots();
     return qp.map((docs) => docs.docs
         .map((doc) => Report.fromMap(doc.data() as Map<String, dynamic>))
         .toList());

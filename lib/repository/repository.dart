@@ -235,6 +235,14 @@ class Repository
     return null;
   }
 
+  Stream<List<Report>>? getFilteredReports(
+      {required SearchReport searchReport}) {
+    if (dbService == DBService.FIRESTORE) {
+      return _firestore.getFilteredReports(searchReport: searchReport);
+    }
+    return null;
+  }
+
   @override
   Future<Advert?> getAdvertByID({required String id}) async {
     if (dbService == DBService.FIRESTORE) {

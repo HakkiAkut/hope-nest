@@ -111,6 +111,9 @@ class _HomeRootPageState extends State<HomeRootPage> {
                       else if (_appUserVM.currentIndex == 1) {
                         SearchFilter().searchPostDialog(context: context);
                       }
+                      else if (_appUserVM.currentIndex == 2 && _appUserVM.appUser!.isAdmin) {
+                        SearchFilter().searchReportDialog(context: context);
+                      }
                     },
                   ),
                 ),
