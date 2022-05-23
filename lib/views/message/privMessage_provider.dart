@@ -17,11 +17,11 @@ class privMessage_provider extends StatelessWidget {
   Widget build(BuildContext context) {
     final _messageVM = Provider.of<MessageVM>(context);
     final _appUserVM = Provider.of<AppUserVM>(context);
-    return StreamProvider<List<Messages>>.value(
 
-      value: _messageVM.getMessage(cid:chatroom.id), //
+    return StreamProvider<List<Messages>>.value(
+      value: _messageVM.getMessage(cid:chatroom.id),
       initialData: const [],
-      child: const PrivMessage_View(),
+      child: const PrivMessage_View(chatroom: chatroom),
       updateShouldNotify: (prev, now) => true,
     );
   }

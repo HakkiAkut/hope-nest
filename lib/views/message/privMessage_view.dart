@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hope_nest/models/chatroom.dart';
 import 'package:hope_nest/models/messages.dart';
 import 'package:hope_nest/view_models/message_vm.dart';
 import 'package:provider/provider.dart';
 
 class PrivMessage_View extends StatefulWidget {
-  const PrivMessage_View({Key? key}) : super(key: key);
+  final ChatRoom chatroom;
+  const PrivMessage_View({Key? key, required this.chatroom}) : super(key: key);
 
   @override
   _MessagesViewState createState() => _MessagesViewState();
