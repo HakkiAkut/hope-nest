@@ -31,6 +31,11 @@ class _MessagesViewState extends State<PrivMessage_View> {
 
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text( widget.chatroom.users[0]!=_appUserVM.appUser!.uid ? widget.chatroom.users[1] : widget.chatroom.users[0]),
+        backgroundColor: Color(0xFF574b90),
+        centerTitle: true,
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
