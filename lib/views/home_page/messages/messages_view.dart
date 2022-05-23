@@ -27,6 +27,7 @@ class _MessagesViewState extends State<MessagesView> {
           itemBuilder: (BuildContext context, int index) {
             return ChatRoomListContainer(chatRoom: _chatRoom_vm[index]);
           }),
+
     );
   }
 }

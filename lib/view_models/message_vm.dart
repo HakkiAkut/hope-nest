@@ -23,7 +23,11 @@ class MessageVM with ChangeNotifier implements MessageMethod {
 
   @override
   Stream<List<Messages>>? getMessage({required String cid}) {
-    // TODO: implement getMessage
     return _repository.getMessage(cid : cid);
+  }
+
+  @override
+  Future<bool?> setMessage({required String cid ,required Messages message}) async {
+    return _repository.setMessage(cid:cid , message: message);
   }
 }

@@ -42,14 +42,15 @@ class ChatRoomListContainer extends StatelessWidget {
                 ],
               ),
               Text(
-                 DateFormat('dd/MM/yyyy').format(chatRoom.time.toDate()),
+                DateFormat('dd/MM/yyyy').format(chatRoom.time.toDate()),
                 style: const TextStyle(fontSize: 16),
               ),
             ],
           ),
         ),
         onTap: () {
-          Navigator.pushNamed(context, NavigationConstants.CHATROOM,
+          //print(chatRoom.id);
+          Navigator.pushNamed(context, NavigationConstants.MESSAGE,
               arguments: chatRoom);
         });
   }

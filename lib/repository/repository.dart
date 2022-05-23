@@ -210,6 +210,14 @@ class Repository
     }
     return null;
   }
+  @override
+  Future<bool?> setMessage({required String cid,required Messages message}) async {
+    if (dbService == DBService.FIRESTORE) {
+      bool? ret = await _firestore.setMessage( cid:cid ,message: message);
+      return ret;
+    }
+    return null;
+  }
 
   @override
   Stream<List<Report>>? getReports() {

@@ -20,6 +20,8 @@ import 'package:hope_nest/views/components/toast_message/toast_message.dart';
 
 class UserDatabaseService
     implements
+        MessageMethod,
+        ChatRoomMethod,
         UserMethods,
         AdvertMethods,
         BlogMethods,
@@ -39,7 +41,7 @@ class UserDatabaseService
   Future<AppUser?> getUser({required String id}) async {
     try {
       DocumentSnapshot user =
-          await _firestore.collection("users").doc(id).get();
+      await _firestore.collection("users").doc(id).get();
       Map<String, dynamic> userData = user.data() as Map<String, dynamic>;
       AppUser newUser = AppUser.fromMap(userData);
       return newUser;
@@ -86,7 +88,7 @@ class UserDatabaseService
       query = query.where('kind', isEqualTo: searchAdvert.kind);
     }
     Stream<QuerySnapshot> qp =
-        query.orderBy('date', descending: true).limit(10).snapshots();
+    query.orderBy('date', descending: true).limit(10).snapshots();
     return qp.map((docs) => docs.docs
         .map((doc) => Advert.fromMap(doc.data() as Map<String, dynamic>))
         .toList());
@@ -190,7 +192,6 @@ class UserDatabaseService
         .collection('chatRoom')
         .doc(cid)
         .collection('messages')
-        //.where("users", arrayContains: id)
         .orderBy('time', descending: true)
         .snapshots();
     return q.map((docs) => docs.docs
@@ -213,7 +214,7 @@ class UserDatabaseService
   Future<Advert?> getAdvertByID({required String id}) async {
     try {
       DocumentSnapshot advert =
-          await _firestore.collection("adverts").doc(id).get();
+      await _firestore.collection("adverts").doc(id).get();
       Map<String, dynamic> advertData = advert.data() as Map<String, dynamic>;
       Advert newAdvert = Advert.fromMap(advertData);
       return newAdvert;
@@ -227,7 +228,7 @@ class UserDatabaseService
   Future<Post?> getPostByID({required String id}) async {
     try {
       DocumentSnapshot post =
-          await _firestore.collection("posts").doc(id).get();
+      await _firestore.collection("posts").doc(id).get();
       Map<String, dynamic> postData = post.data() as Map<String, dynamic>;
       Post newPost = Post.fromMap(postData);
       return newPost;
@@ -247,4 +248,13 @@ class UserDatabaseService
       return false;
     }
   }
+
+  @override
+  Future<bool?> setMessage({required String cid, required Messages message}) {
+    // TODO: implement setMessage
+    throw UnimplementedError();
+  }
+
+
+
 }
