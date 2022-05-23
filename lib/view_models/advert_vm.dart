@@ -31,7 +31,8 @@ class AdvertVM with ChangeNotifier implements AdvertMethods, StorageMethods {
   }
 
   bool isSearchAdvertNull() {
-    return (_searchAdvert.location == null || _searchAdvert.location == '')
+    return ((_searchAdvert.location == null || _searchAdvert.location == '') &&
+            (_searchAdvert.kind == null || _searchAdvert.kind == ''))
         ? true
         : false;
   }

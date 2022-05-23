@@ -16,6 +16,7 @@ class MessagesProvider extends StatelessWidget {
   Widget build(BuildContext context) {
     final _chatRoomVM = Provider.of<ChatRoomVM>(context);
     final _appUserVM = Provider.of<AppUserVM>(context);
+    _appUserVM.currentIndex=2;
     return StreamProvider<List<ChatRoom>>.value(
     value: _chatRoomVM.getChatRoom(id: _appUserVM.appUser!.uid),
     initialData: const [],

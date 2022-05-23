@@ -41,7 +41,7 @@ class UserDatabaseService
   Future<AppUser?> getUser({required String id}) async {
     try {
       DocumentSnapshot user =
-      await _firestore.collection("users").doc(id).get();
+          await _firestore.collection("users").doc(id).get();
       Map<String, dynamic> userData = user.data() as Map<String, dynamic>;
       AppUser newUser = AppUser.fromMap(userData);
       return newUser;
@@ -69,6 +69,7 @@ class UserDatabaseService
   Stream<List<Advert>> getAdverts() {
     Stream<QuerySnapshot> qp = _firestore
         .collection('adverts')
+        .where("isBanned", isEqualTo: false)
         .orderBy('date', descending: true)
         .limit(10)
         .snapshots();
@@ -77,10 +78,10 @@ class UserDatabaseService
         .toList());
   }
 
-  @override
   Stream<List<Advert>> getFilteredAdverts(
       {required SearchAdvert searchAdvert}) {
-    Query query = _firestore.collection('adverts');
+    Query query =
+        _firestore.collection('adverts').where("isBanned", isEqualTo: false);
     if (searchAdvert.location != '' && searchAdvert.location != null) {
       query = query.where('location', isEqualTo: searchAdvert.location);
     }
@@ -88,7 +89,7 @@ class UserDatabaseService
       query = query.where('kind', isEqualTo: searchAdvert.kind);
     }
     Stream<QuerySnapshot> qp =
-    query.orderBy('date', descending: true).limit(10).snapshots();
+        query.orderBy('date', descending: true).limit(10).snapshots();
     return qp.map((docs) => docs.docs
         .map((doc) => Advert.fromMap(doc.data() as Map<String, dynamic>))
         .toList());
@@ -101,6 +102,20 @@ class UserDatabaseService
         .orderBy('date', descending: true)
         .limit(10)
         .snapshots();
+    return qp.map((docs) => docs.docs
+        .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
+        .toList());
+  }
+
+  Stream<List<Post>> getFilteredPosts(
+      {required SearchPost searchPost}) {
+    Query query =
+    _firestore.collection('posts').where("isBanned", isEqualTo: false);
+    if (searchPost.title != '' && searchPost.title != null) {
+      query = query.where('title', isEqualTo: searchPost.title);
+    }
+    Stream<QuerySnapshot> qp =
+    query.orderBy('date', descending: true).limit(10).snapshots();
     return qp.map((docs) => docs.docs
         .map((doc) => Post.fromMap(doc.data() as Map<String, dynamic>))
         .toList());
@@ -214,7 +229,7 @@ class UserDatabaseService
   Future<Advert?> getAdvertByID({required String id}) async {
     try {
       DocumentSnapshot advert =
-      await _firestore.collection("adverts").doc(id).get();
+          await _firestore.collection("adverts").doc(id).get();
       Map<String, dynamic> advertData = advert.data() as Map<String, dynamic>;
       Advert newAdvert = Advert.fromMap(advertData);
       return newAdvert;
@@ -228,7 +243,7 @@ class UserDatabaseService
   Future<Post?> getPostByID({required String id}) async {
     try {
       DocumentSnapshot post =
-      await _firestore.collection("posts").doc(id).get();
+          await _firestore.collection("posts").doc(id).get();
       Map<String, dynamic> postData = post.data() as Map<String, dynamic>;
       Post newPost = Post.fromMap(postData);
       return newPost;
@@ -250,17 +265,19 @@ class UserDatabaseService
   }
 
   @override
-  Future<bool?> setMessage({required String cid, required Messages message}) async{
+  Future<bool?> setMessage(
+      {required String cid, required Messages message}) async {
     try {
-      await _firestore.collection("chatroom").doc(cid).collection('messages').doc(message.id).set(message.toMap());
+      await _firestore
+          .collection("chatroom")
+          .doc(cid)
+          .collection('messages')
+          .doc(message.id)
+          .set(message.toMap());
       return true;
     } catch (e) {
       print(e.toString());
       return false;
     }
-
   }
-
-
-
 }

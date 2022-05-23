@@ -6,6 +6,7 @@ import 'package:hope_nest/util/enum/user_type.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/advert_vm.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
+import 'package:hope_nest/view_models/blog_vm.dart';
 import 'package:hope_nest/views/components/navigation_bar/navigation_bar.dart';
 import 'package:hope_nest/views/components/owner_info_tile/circular_user_image.dart';
 import 'package:hope_nest/views/components/search_filter/search_filter.dart';
@@ -28,6 +29,7 @@ class _HomeRootPageState extends State<HomeRootPage> {
   Widget build(BuildContext context) {
     final _appUserVM = Provider.of<AppUserVM>(context);
     final _advertVM = Provider.of<AdvertVM>(context);
+    final _postsVM = Provider.of<BlogVM>(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -90,16 +92,25 @@ class _HomeRootPageState extends State<HomeRootPage> {
                       horizontal: DynamicSize.height(context, 0.02)),
                   child: TextFormField(
                     style: const TextStyle(color: Colors.black),
-                    readOnly: true,
-                    controller: TextEditingController(
-                        text: _advertVM.searchAdvert.toString()),
+                    readOnly: _appUserVM.currentIndex != 1 ? true : false,
+                    controller: _appUserVM.tec,
                     decoration: inputStyle.copyWith(fillColor: Colors.white),
                     onChanged: (value) {
-                      _advertVM.searchAdvert = SearchAdvert(location: value);
+                      if (_appUserVM.currentIndex == 0) {
+                        _advertVM.searchAdvert = SearchAdvert(location: value);
+                      } else if (_appUserVM.currentIndex == 1) {
+                        _postsVM.searchPost = SearchPost(title: value);
+                      }
                       print(value);
                     },
                     onTap: () {
-                      SearchFilter().dialog(context: context);
+                      print(_appUserVM.currentIndex);
+                      if (_appUserVM.currentIndex == 0) {
+                        SearchFilter().searchAdvertDialog(context: context);
+                      }
+                      else if (_appUserVM.currentIndex == 1) {
+                        SearchFilter().searchPostDialog(context: context);
+                      }
                     },
                   ),
                 ),

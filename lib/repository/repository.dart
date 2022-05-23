@@ -152,6 +152,14 @@ class Repository
     return null;
   }
 
+  Stream<List<Post>>? getFilteredPosts(
+      {required SearchPost searchPost}) {
+    if (dbService == DBService.FIRESTORE) {
+      return _firestore.getFilteredPosts(searchPost: searchPost);
+    }
+    return null;
+  }
+
   @override
   Future<List<Comment>?>? getCommentByPID({required String pid}) async {
     if (dbService == DBService.FIRESTORE) {

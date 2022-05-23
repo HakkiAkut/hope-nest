@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/post.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
+import 'package:hope_nest/view_models/blog_vm.dart';
 import 'package:hope_nest/views/components/custom_floating_action_button/custom_floating_action_button.dart';
 import 'package:hope_nest/views/components/post_list_container/post_list_container.dart';
 import 'package:hope_nest/views/components/send_post/send_post.dart';
@@ -18,6 +19,9 @@ class _BlogViewState extends State<BlogView> {
   Widget build(BuildContext context) {
     final _postsVM = Provider.of<List<Post>>(context);
     final _appUserVM = Provider.of<AppUserVM>(context);
+    final _blogVM = Provider.of<BlogVM>(context);
+    _appUserVM.currentIndex=1;
+    _appUserVM.tec.text= _blogVM.searchPost.toString();
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: CustomFloatingActionButton(

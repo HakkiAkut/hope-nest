@@ -4,6 +4,7 @@ import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/util/constants/navigation_constants.dart';
 import 'package:hope_nest/util/constants/palette.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
+import 'package:hope_nest/view_models/advert_vm.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/views/components/custom_floating_action_button/custom_floating_action_button.dart';
 import 'package:hope_nest/views/components/send_advert/send_advert.dart';
@@ -22,6 +23,9 @@ class _HomeViewPageState extends State<HomeViewPage> {
   Widget build(BuildContext context) {
     final _appUserVM = Provider.of<AppUserVM>(context);
     final _advertsVM = Provider.of<List<Advert>>(context);
+    final _advertVM = Provider.of<AdvertVM>(context);
+    _appUserVM.currentIndex=0;
+    _appUserVM.tec.text=_advertVM.searchAdvert.toString();
     return Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: CustomFloatingActionButton(

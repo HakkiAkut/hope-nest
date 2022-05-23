@@ -11,12 +11,15 @@ import 'package:hope_nest/services/storage/base/storage_base.dart';
 import 'package:hope_nest/util/enum/app_state.dart';
 import 'package:hope_nest/util/enum/login_state.dart';
 import 'package:hope_nest/util/init/service_locator.dart';
+import 'package:hope_nest/views/components/toast_message/toast_message.dart';
 
 class AppUserVM
     with ChangeNotifier
     implements AuthMethods, UserMethods, CommentMethods, StorageMethods {
   AppState _state = AppState.IDLE;
   LoginState _loginState = LoginState.SIGNIN;
+  int currentIndex=0;
+  TextEditingController tec = TextEditingController();
 
   final Repository _repository = serviceLocator<Repository>();
   AppUser? _appUser;
@@ -40,6 +43,10 @@ class AppUserVM
     currentUser();
   }
 
+  set searchTitle(String value) {
+    tec.text = value;
+  }
+
   set state(AppState value) {
     _state = value;
     notifyListeners();
@@ -59,7 +66,7 @@ class AppUserVM
       if (_appUser != null) {
         if(_appUser?.isBanned == true){
           signOut();
-          // TODO: add ban message
+          getErrorMessage(text: "user is banned!");
         }
         return _appUser;
       } else {

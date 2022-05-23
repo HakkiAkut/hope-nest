@@ -19,3 +19,15 @@ class SearchAdvert {
     return str;
   }
 }
+
+class SearchPost {
+  String? id;
+  String? title;
+
+  SearchPost({this.id, this.title,});
+
+  @override
+  String toString() {
+    return title ?? "";
+  }
+}
