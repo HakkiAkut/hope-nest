@@ -19,7 +19,7 @@ class MessageListContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          Text('${message.from} ' , style:  TextStyle(color: isCurrentUser ? Colors.white: Colors.deepOrangeAccent , fontSize: 10.0),),
+         // Text('${message.from} ' , style:  TextStyle(color: isCurrentUser ? Colors.white: Colors.deepOrangeAccent , fontSize: 10.0),),
           SizedBox(height:5),
           Material(
               borderRadius: isCurrentUser ? BorderRadius.only(

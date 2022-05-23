@@ -269,11 +269,12 @@ class UserDatabaseService
       {required String cid, required Messages message}) async {
     try {
       await _firestore
-          .collection("chatroom")
+          .collection("chatRoom")
           .doc(cid)
           .collection('messages')
           .doc(message.id)
           .set(message.toMap());
+      //print("eklendii");
       return true;
     } catch (e) {
       print(e.toString());
