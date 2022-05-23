@@ -3,52 +3,47 @@ import 'package:hope_nest/models/messages.dart';
 import 'package:hope_nest/util/constants/navigation_constants.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../../../view_models/app_user_vm.dart';
 
 class MessageListContainer extends StatelessWidget {
   final Messages message;
-
   const MessageListContainer({Key? key, required this.message}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        child: Container(
-          margin: EdgeInsets.only(bottom: DynamicSize.height(context, 0.036)),
-          height: DynamicSize.height(context, 0.097),
-          decoration: BoxDecoration(
-            border: Border.all(width: 1, color: Colors.orangeAccent),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      border: Border.all(width: 1, color: Colors.orangeAccent),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    "${message.message}",
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ],
+    final _appUserVM = Provider.of<AppUserVM>(context);
+    bool isCurrentUser= (_appUserVM.appUser!.uid==message.from);
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        crossAxisAlignment: isCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Text('${message.from} ' , style:  TextStyle(color: isCurrentUser ? Colors.white: Colors.deepOrangeAccent , fontSize: 10.0),),
+          SizedBox(height:5),
+          Material(
+              borderRadius: isCurrentUser ? BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+                topLeft: Radius.circular(30),
+              ) : BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+                topRight: Radius.circular(30),
               ),
+              elevation: 15.0,
+              color: isCurrentUser ?Color(0xFF574b90): Colors.deepOrange ,
+              child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal:20, vertical :10),
+                  child:Text(message.message.toString(), style: TextStyle(color:Colors.white) )
 
-            ],
+              )
+
           ),
-        ),
-        onTap: () {
-          //print(chatRoom.id);
-          Navigator.pushNamed(context, NavigationConstants.MESSAGE,
-              arguments: message);
-        });
+        ],
+
+
+      ),
+    );
   }
 }
