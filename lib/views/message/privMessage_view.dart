@@ -19,13 +19,22 @@ class _MessagesViewState extends State<PrivMessage_View> {
 
 
     return Scaffold(
-      body: ListView.builder(
-          physics: ScrollPhysics(),
-          shrinkWrap: true,
-          itemCount: _message_vm.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Text(_message_vm[index].id);
-          }),
+      body: Column(
+        children: [
+          ListView.builder(
+
+              physics: ScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: _message_vm.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Text(_message_vm[index].id);
+              }),
+
+          // TODO button
+
+        ],
+      ),
+
     );
   }
 }
