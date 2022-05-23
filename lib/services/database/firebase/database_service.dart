@@ -250,9 +250,15 @@ class UserDatabaseService
   }
 
   @override
-  Future<bool?> setMessage({required String cid, required Messages message}) {
-    // TODO: implement setMessage
-    throw UnimplementedError();
+  Future<bool?> setMessage({required String cid, required Messages message}) async{
+    try {
+      await _firestore.collection("chatroom").doc(cid).collection('messages').doc(message.id).set(message.toMap());
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+
   }
 
 

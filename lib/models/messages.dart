@@ -5,12 +5,12 @@ class Messages {
   String from;
   String to;
   String? message;
-  Timestamp time;
+  Timestamp? time;
 
   Messages(
       {required this.id,
         required this.from,
-        required this.time,
+        this.time,
         required this.to,
         this.message});
 
@@ -18,7 +18,7 @@ class Messages {
     return {
       "id": id,
       "from": from,
-      "time": time,
+      "time": time??FieldValue.serverTimestamp(),
       "message": message,
       "to": to,
     };
