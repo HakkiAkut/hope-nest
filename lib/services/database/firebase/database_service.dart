@@ -15,7 +15,9 @@ import 'package:hope_nest/services/database/base/report_db_base.dart';
 import 'package:hope_nest/services/database/base/chatRoom_db.dart';
 import 'package:hope_nest/services/database/base/message_db.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
+import 'package:hope_nest/services/notification/firebase/notification_service.dart';
 import 'package:hope_nest/util/enum/report_type.dart';
+import 'package:hope_nest/util/init/service_locator.dart';
 import 'package:hope_nest/views/components/toast_message/toast_message.dart';
 
 class UserDatabaseService
@@ -58,6 +60,19 @@ class UserDatabaseService
           .collection("users")
           .doc(appUser.uid)
           .set(appUser.toMap());
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future<bool> setToken({required String token}) async {
+    try {
+      await _firestore
+          .collection("tokens")
+          .doc(auth.currentUser!.uid)
+          .set({"token": token});
       return true;
     } catch (e) {
       print(e.toString());

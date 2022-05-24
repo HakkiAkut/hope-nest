@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/search.dart';
+import 'package:hope_nest/services/notification/firebase/notification_service.dart';
 import 'package:hope_nest/util/constants/navigation_constants.dart';
 import 'package:hope_nest/util/constants/palette.dart';
 import 'package:hope_nest/util/enum/user_type.dart';
+import 'package:hope_nest/util/init/notifications.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:hope_nest/view_models/advert_vm.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
@@ -25,6 +27,13 @@ class HomeRootPage extends StatefulWidget {
 }
 
 class _HomeRootPageState extends State<HomeRootPage> {
+  @override
+  void initState() {
+    super.initState();
+    FCMNotifications().getToken();
+    NotificationInitializer.notification();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _appUserVM = Provider.of<AppUserVM>(context);
@@ -107,11 +116,10 @@ class _HomeRootPageState extends State<HomeRootPage> {
                       print(_appUserVM.currentIndex);
                       if (_appUserVM.currentIndex == 0) {
                         SearchFilter().searchAdvertDialog(context: context);
-                      }
-                      else if (_appUserVM.currentIndex == 1) {
+                      } else if (_appUserVM.currentIndex == 1) {
                         SearchFilter().searchPostDialog(context: context);
-                      }
-                      else if (_appUserVM.currentIndex == 2 && _appUserVM.appUser!.isAdmin) {
+                      } else if (_appUserVM.currentIndex == 2 &&
+                          _appUserVM.appUser!.isAdmin) {
                         SearchFilter().searchReportDialog(context: context);
                       }
                     },
