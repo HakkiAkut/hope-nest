@@ -312,4 +312,11 @@ class UserDatabaseService
       return false;
     }
   }
+
+  Future<String> getToken({required String id}) async {
+    DocumentSnapshot tokenData =
+        await _firestore.collection("tokens").doc(id).get();
+    Map<String, dynamic> userData = tokenData.data() as Map<String, dynamic>;
+    return userData["token"];
+  }
 }

@@ -19,7 +19,10 @@ class privMessage_provider extends StatelessWidget {
     final _appUserVM = Provider.of<AppUserVM>(context);
 
     return StreamProvider<List<Messages>>.value(
-      value: _messageVM.getMessage(cid:chatroom.id),
+      value: _messageVM.openChatroom(cid:chatroom.id,uid: chatroom.users[0] ==
+          _appUserVM.appUser!.uid
+          ? chatroom.users[1]
+          : chatroom.users[0]),
       initialData: const [],
       child:PrivMessage_View(chatroom: chatroom),
       updateShouldNotify: (prev, now) => true,

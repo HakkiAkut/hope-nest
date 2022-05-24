@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Messages {
   String id;
   String from;
+  String? fromName;
   String to;
   String? message;
   Timestamp? time;

@@ -15,6 +15,7 @@ import 'package:hope_nest/services/database/base/comments_db_base.dart';
 import 'package:hope_nest/services/database/base/report_db_base.dart';
 import 'package:hope_nest/services/database/base/user_db_base.dart';
 import 'package:hope_nest/services/database/firebase/database_service.dart';
+import 'package:hope_nest/services/notification/firebase/notification_service.dart';
 import 'package:hope_nest/services/storage/base/storage_base.dart';
 import 'package:hope_nest/services/storage/firebase/storage_service.dart';
 import 'package:hope_nest/util/enum/database_service.dart';
@@ -42,6 +43,7 @@ class Repository
   final AuthService _auth = serviceLocator<AuthService>();
   final UserDatabaseService _firestore = serviceLocator<UserDatabaseService>();
   final StorageService _storage = serviceLocator<StorageService>();
+  final FCMNotifications _fcm = serviceLocator<FCMNotifications>();
   final WebService webService = WebService.FIREBASE;
   final DBService dbService = DBService.FIRESTORE;
   final StorageServiceType sSType = StorageServiceType.FIREBASE;
@@ -152,8 +154,7 @@ class Repository
     return null;
   }
 
-  Stream<List<Post>>? getFilteredPosts(
-      {required SearchPost searchPost}) {
+  Stream<List<Post>>? getFilteredPosts({required SearchPost searchPost}) {
     if (dbService == DBService.FIRESTORE) {
       return _firestore.getFilteredPosts(searchPost: searchPost);
     }
@@ -195,9 +196,11 @@ class Repository
   }
 
   @override
-  Future<bool?> setReport({required Report report,required bool isSuspended}) async {
+  Future<bool?> setReport(
+      {required Report report, required bool isSuspended}) async {
     if (dbService == DBService.FIRESTORE) {
-      bool? ret = await _firestore.setReport(report: report,isSuspended: isSuspended);
+      bool? ret =
+          await _firestore.setReport(report: report, isSuspended: isSuspended);
       return ret;
     }
     return null;
@@ -218,10 +221,12 @@ class Repository
     }
     return null;
   }
+
   @override
-  Future<bool?> setMessage({required String cid,required Messages message}) async {
+  Future<bool?> setMessage(
+      {required String cid, required Messages message}) async {
     if (dbService == DBService.FIRESTORE) {
-      bool? ret = await _firestore.setMessage( cid:cid ,message: message);
+      bool? ret = await _firestore.setMessage(cid: cid, message: message);
       return ret;
     }
     return null;
@@ -265,5 +270,14 @@ class Repository
       return await _firestore.setPost(post: post);
     }
     return null;
+  }
+
+  Future<bool> sendNotification(
+      {required String title, required String body, required String token}) {
+    return _fcm.sendNotification(title: title, body: body, token: token);
+  }
+
+  Future<String> getToken({required String id}) async{
+    return await _firestore.getToken(id: id);
   }
 }

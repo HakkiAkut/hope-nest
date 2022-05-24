@@ -30,7 +30,6 @@ class _HomeRootPageState extends State<HomeRootPage> {
   @override
   void initState() {
     super.initState();
-    FCMNotifications().getToken();
     NotificationInitializer.notification();
   }
 
