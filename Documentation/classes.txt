@@ -1,0 +1,71 @@
+users
+-------
+id (String) PK
+name (String)
+surname (String)
+email (String)
+phone (String)
+image (String)
+location (String)
+description (String)
+registration_date (Timestamp)
+isBanned (boolean)
+isAdmin (boolean)
+
+tokens (yeni class eklemen lazım, users ile bağlantılı)
+-------
+userId (String) PK
+token (String)
+
+adverts
+-------
+id (String) PK
+userId (String) FK
+name (String)
+race (String)
+kind (String)
+age (number*)
+weight(number*)
+date (Timestamp)
+description (String)
+location (String)
+url (String)
+vaccines (boolean)
+training (boolean)
+isBanned (boolean)
+
+posts
+------
+id (String) PK
+userId (String) FK
+description (String)
+date (Timestamp)
+url (String)
+isBanned (boolean)
+
+comments
+--------
+id (String) PK 
+userId (String) FK
+postId (String) FK
+text (String)
+date (Timestamp)
+
+chatroom (messages yerine chatroom tablosu var)
+--------
+id (String) PK 
+last_message (String)
+time (Timestamp)
+users (array**) holds Id's of the users(FK) 
+
+messages (message yerine messages tablosu var)
+-------
+id (String) PK 
+chatroomId (String) FK 
+from (String) FK 
+to (String) FK 
+message (String)
+time (Timestamp)
+
+* firestore has number data type rather than int and double. (bu kısmı tablonun altına eklersin)
+** firestore has an array data type which can holds a list of values that has dynamic data types.
