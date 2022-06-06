@@ -225,7 +225,7 @@ class UserDatabaseService
         .collection('chatRoom')
         .doc(cid)
         .collection('messages')
-        .orderBy('time', descending: true)
+        .orderBy('time')
         .snapshots();
     return q.map((docs) => docs.docs
         .map((doc) => Messages.fromMap(doc.data() as Map<String, dynamic>))
