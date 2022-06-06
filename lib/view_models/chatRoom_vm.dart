@@ -25,4 +25,9 @@ class ChatRoomVM with ChangeNotifier implements ChatRoomMethod {
   Stream<List<ChatRoom>>? getChatRoom({required String id}) {
     return _repository.getChatRoom(id : id);
   }
+
+  @override
+  Future<bool?> setChatRoom({required ChatRoom chatroom}) async {
+      return await _repository.setChatRoom(chatroom: chatroom);
+      }
 }

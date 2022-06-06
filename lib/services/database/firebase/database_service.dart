@@ -327,4 +327,19 @@ class UserDatabaseService
     Map<String, dynamic> userData = tokenData.data() as Map<String, dynamic>;
     return userData["token"];
   }
+
+  @override
+    Future<bool?> setChatRoom({required ChatRoom chatroom}) async {
+    try {
+      await _firestore
+          .collection("chatRoom")
+          .doc(chatroom.id)
+          .set(chatroom.toMap());
+      return true;
+      //print("eklendii");
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 }

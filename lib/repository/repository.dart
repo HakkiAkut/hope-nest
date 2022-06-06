@@ -223,8 +223,7 @@ class Repository
   }
 
   @override
-  Future<bool?> setMessage(
-      {required String cid, required Messages message}) async {
+  Future<bool?> setMessage( {required String cid, required Messages message}) async {
     if (dbService == DBService.FIRESTORE) {
       bool? ret = await _firestore.setMessage(cid: cid, message: message);
       return ret;
@@ -279,5 +278,14 @@ class Repository
 
   Future<String> getToken({required String id}) async{
     return await _firestore.getToken(id: id);
+  }
+
+  @override
+  Future<bool?> setChatRoom( {required ChatRoom chatroom}) async {
+    if (dbService == DBService.FIRESTORE) {
+      bool? ret = await _firestore.setChatRoom( chatroom: chatroom) ;
+      return ret;
+    }
+    return null;
   }
 }
