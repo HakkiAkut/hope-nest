@@ -304,9 +304,17 @@ class UserDatabaseService
           .doc(cid)
           .collection('messages')
           .doc(message.id)
-          .set(message.toMap());
-      //print("eklendii");
+          .set(message.toMap())
+          .then((value) async {
+          await _firestore
+              .collection("chatRoom")
+              .doc(cid)
+              .update({'last_message': message.message, 'time':  DateTime.now() })
+              .then((value) => print("MESSAGE Updated"))
+              .catchError((error) => print("Failed to update msg: $error"));
+          });
       return true;
+      //print("eklendii");
     } catch (e) {
       print(e.toString());
       return false;
