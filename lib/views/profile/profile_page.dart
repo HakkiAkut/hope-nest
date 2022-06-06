@@ -12,6 +12,7 @@ import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/view_models/chatRoom_vm.dart';
 import 'package:hope_nest/views/components/app_bar/app_bar.dart';
 import 'package:hope_nest/views/components/appbar_action_widget/appbar_action_widget.dart';
+import 'package:hope_nest/views/components/edit_profile/edit_profile.dart';
 import 'package:hope_nest/views/components/image_container/image_container.dart';
 import 'package:hope_nest/views/components/styles/background_style.dart';
 import 'package:hope_nest/views/home_page/home/home_view.dart';
@@ -43,10 +44,22 @@ class _ProfilePageState extends State<ProfilePage> {
       decoration: backgroundStyle,
       height: DynamicSize.height(context, 1),
       child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButtonLocation: (widget.userType == UserType.mainUser ||
+                _appUser.uid == _appUserVM.appUser!.uid)
+            ? FloatingActionButtonLocation.startFloat
+            : FloatingActionButtonLocation.centerFloat,
         floatingActionButton: (widget.userType == UserType.mainUser ||
                 _appUser.uid == _appUserVM.appUser!.uid)
-            ? Container()
+            ? FloatingActionButton(
+                heroTag: "editButton",
+                child: const Icon(
+                  Icons.edit,
+                ),
+                onPressed: () {
+                  EditProfile().dialog(context: context, appUser: _appUserVM.appUser!);
+                },
+                backgroundColor: Palette.MAIN_COLOR_BLUE,
+              )
             : CustomFloatingActionButton(
                 text: "Send Message",
                 onPressed: () async {
