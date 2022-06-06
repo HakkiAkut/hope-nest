@@ -35,16 +35,30 @@ class ChatRoomListContainer extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  Text(
-                    "${chatRoom.last_message}",
-                    style: const TextStyle(fontSize: 18),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "${chatRoom.names[1]}",
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold ),
+                      ),
+
+                      Text(
+                        "${chatRoom.last_message}",
+                        style: const TextStyle(fontSize: 15),
+                      ),
+
+                    ],
                   ),
+
                 ],
               ),
               Text(
                 DateFormat('dd/MM/yyyy').format(chatRoom.time.toDate()),
                 style: const TextStyle(fontSize: 16),
               ),
+
+
             ],
           ),
         ),
