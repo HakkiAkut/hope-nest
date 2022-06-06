@@ -40,35 +40,34 @@ class _ProfilePageState extends State<ProfilePage> {
             : _appUserVM.advertOwner!);
 
     return Container(
-
       decoration: backgroundStyle,
       height: DynamicSize.height(context, 1),
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: widget.userType == UserType.mainUser ? Container() :
-        CustomFloatingActionButton(
-            text: "Send Message",
-            onPressed: () async {
-              //chatroom object
-              ChatRoom  chatroom = ChatRoom(
-                id:  _appUserVM.appUser!.uid + _appUser.uid,
-                last_message: '',
-                names: [_appUserVM.appUser!.name,_appUser.name],
-                users:[_appUser.uid, _appUserVM.appUser!.uid],
-                time:Timestamp.fromDate(DateTime.now()));
+        floatingActionButton: (widget.userType == UserType.mainUser ||
+                _appUser.uid == _appUserVM.appUser!.uid)
+            ? Container()
+            : CustomFloatingActionButton(
+                text: "Send Message",
+                onPressed: () async {
+                  //chatroom object
+                  ChatRoom chatroom = ChatRoom(
+                      id: _appUserVM.appUser!.uid + _appUser.uid,
+                      last_message: '',
+                      names: [_appUserVM.appUser!.name, _appUser.name],
+                      users: [_appUser.uid, _appUserVM.appUser!.uid],
+                      time: Timestamp.fromDate(DateTime.now()));
 
-                bool? x = await chatroomvm.setChatRoom(chatroom: chatroom);
-                print(x);
-                if (x != null && x ) {
-                  print("OPENCHATROOM");
-                  Navigator.pushNamed(context, NavigationConstants.MESSAGE, arguments: chatroom);
+                  bool? x = await chatroomvm.setChatRoom(chatroom: chatroom);
+                  print(x);
+                  if (x != null && x) {
+                    print("OPENCHATROOM");
+                    Navigator.pushNamed(context, NavigationConstants.MESSAGE,
+                        arguments: chatroom);
+                  }
 
-                }
-
-
-              // if true return nav with chatroom
-
-            } ),
+                  // if true return nav with chatroom
+                }),
         backgroundColor: Colors.transparent,
         appBar: CustomAppBar(
           text: "Return Back",
