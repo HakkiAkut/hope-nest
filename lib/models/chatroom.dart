@@ -7,12 +7,14 @@ class ChatRoom {
   String? last_message;
   late Timestamp time;
   late List<dynamic> users;
+  late List<dynamic> names;
 
   ChatRoom(
       {required this.id,
         required this.time,
         required this.last_message,
         required this.users,
+        required this.names,
         this.messages});
 
   Map<String, dynamic> toMap() {
@@ -20,6 +22,7 @@ class ChatRoom {
       "id": id,
       "time": time,
       "users": users,
+      "names": names,
       "last_message": last_message,
       "messages": messages,
     };
@@ -32,6 +35,7 @@ class ChatRoom {
       last_message: map['last_message'] as String,
       time: map['time'] as Timestamp,
       users: map['users'] as List<dynamic>,
+      names: map['names'] as List<dynamic>,
     );
   }
 }
