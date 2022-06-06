@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:hope_nest/util/constants/palette.dart';
 import 'package:hope_nest/util/enum/login_state.dart';
@@ -33,6 +34,12 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    key1.currentState?.reset();
+    key1.currentState?.reset();
+    key3.currentState?.reset();
+    key4.currentState?.reset();
+    key5.currentState?.reset();
+    key6.currentState?.reset();
     print("login");
     debugPrint("login2");
     return Scaffold(
@@ -162,25 +169,56 @@ class _LoginPageState extends State<LoginPage> {
       child: ElevatedButton(
         style: buttonStyle,
         onPressed: () async {
-          if (key1.currentState!.validate() && key2.currentState!.validate()) {
-            key1.currentState!.save();
-            key2.currentState!.save();
-            try {
-              _appUserVM.loginState == LoginState.SIGNIN
-                  ? await _appUserVM.signInWithEmail(email: _email, pwd: _pwd)
-                  : await _appUserVM.signUpWithEmail(
-                      email: _email,
-                      pwd: _pwd,
-                      name: _name,
-                      surname: _surname,
-                      phone: _phone,
-                      location: _location);
-              getDoneMessage(text: "successful!");
-            } catch (e) {
-              getErrorMessage(text: "an error occurred! "+ e.toString());
+          key1.currentState!.validate();
+          key2.currentState!.validate();
+          if (_appUserVM.loginState == LoginState.SIGNUP) {
+            key3.currentState!.validate();
+            key4.currentState!.validate();
+            key5.currentState!.validate();
+            key6.currentState!.validate();
+            if (key1.currentState!.isValid &&
+                key2.currentState!.isValid &&
+                key3.currentState!.isValid &&
+                key4.currentState!.isValid &&
+                key5.currentState!.isValid &&
+                key6.currentState!.isValid) {
+              key1.currentState!.save();
+              key2.currentState!.save();
+              key3.currentState!.save();
+              key4.currentState!.save();
+              key5.currentState!.save();
+              key6.currentState!.save();
+              try {
+                await _appUserVM.signUpWithEmail(
+                    email: _email,
+                    pwd: _pwd,
+                    name: _name,
+                    surname: _surname,
+                    phone: _phone,
+                    location: _location);
+                getDoneMessage(text: "successful!");
+              } catch (e) {
+                getErrorMessage(text: "an error occurred! " + e.toString());
+              }
+            } else {
+              getErrorMessage(
+                  text: "an error occurred! please check validation");
             }
           } else {
-            getErrorMessage(text: "an error occurred! please check validation");
+            if (key1.currentState!.isValid && key2.currentState!.isValid) {
+              key1.currentState!.save();
+              key2.currentState!.save();
+              print("ss123123");
+              try {
+                await _appUserVM.signInWithEmail(email: _email, pwd: _pwd);
+                getDoneMessage(text: "successful!");
+              } catch (e) {
+                getErrorMessage(text: "an error occurred! " + e.toString());
+              }
+            } else {
+              getErrorMessage(
+                  text: "an error occurred! please check validation");
+            }
           }
         },
         child: _appUserVM.loginState == LoginState.SIGNIN
@@ -325,6 +363,28 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       margin:
           EdgeInsets.symmetric(horizontal: DynamicSize.height(context, 0.05)),
+      child: DropdownSearch<String>(
+        key: key6,
+        showSearchBox: true,
+        mode: Mode.MENU,
+        showSelectedItems: true,
+        items: const ["Ankara", "Antalya", "Bursa", 'Istanbul'],
+        dropdownSearchDecoration: loginInputStyle.copyWith(
+          hintText: 'Location',
+        ),
+        validator: (String? item) {
+          if (item == null) return "location can not be null!";
+        },
+        onChanged: (value) => _location = value!,
+      ),
+    );
+  }
+}
+/*
+*
+* Container(
+      margin:
+          EdgeInsets.symmetric(horizontal: DynamicSize.height(context, 0.05)),
       child: TextFormField(
         //keyboardType: TextInputType.pas,
         key: key6,
@@ -342,5 +402,4 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-}
+* */
