@@ -54,9 +54,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 heroTag: "editButton",
                 child: const Icon(
                   Icons.edit,
+                  color: Palette.BACKGROUND,
                 ),
                 onPressed: () {
-                  EditProfile().dialog(context: context, appUser: _appUserVM.appUser!);
+                  EditProfile()
+                      .dialog(context: context, appUser: _appUserVM.appUser!);
                 },
                 backgroundColor: Palette.MAIN_COLOR_BLUE,
               )
