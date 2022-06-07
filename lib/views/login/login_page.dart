@@ -34,12 +34,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    key1.currentState?.reset();
-    key1.currentState?.reset();
+/*
+*     key1.currentState?.reset();
+    key2.currentState?.reset();
     key3.currentState?.reset();
     key4.currentState?.reset();
     key5.currentState?.reset();
-    key6.currentState?.reset();
+    key6.currentState?.reset();*/
     print("login");
     debugPrint("login2");
     return Scaffold(
