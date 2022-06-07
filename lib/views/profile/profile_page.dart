@@ -35,12 +35,16 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final _appUserVM = Provider.of<AppUserVM>(context);
     final chatroomvm = Provider.of<ChatRoomVM>(context);
-    AppUser _appUser = widget.userType == UserType.mainUser
+    AppUser _appUser = AppUser(uid: "0", isAdmin: false);
+    if (_appUserVM.appUser != null) {
+      _appUser = widget.userType == UserType.mainUser
           ? _appUserVM.appUser!
           : (widget.userType == UserType.postOwner
               ? _appUserVM.postOwner!
               : _appUserVM.advertOwner!);
-
+    } else {
+      Navigator.pop(context);
+  }
     try {
       return Container(
         decoration: backgroundStyle,
@@ -92,7 +96,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ? AppBarActionWidget(
                     onPressed: () {
                       _appUserVM.signOut();
-                      Navigator.pop(context);
                     },
                     text: "Log Out")
                 : AppBarActionWidget(
@@ -115,8 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     radius: 50,
                   ),
                   Text(
-                      _appUser.name ??
-                          "" +
+                      _appUser.name! +
                               " " +
                               _appUser.surname! +
                               ", " +

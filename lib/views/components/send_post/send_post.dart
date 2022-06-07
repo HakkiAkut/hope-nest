@@ -6,15 +6,19 @@ import 'package:flutter/services.dart';
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
 import 'package:hope_nest/models/post.dart';
+import 'package:hope_nest/util/enum/app_state.dart';
 import 'package:hope_nest/util/methods/pick_image.dart';
 import 'package:hope_nest/view_models/advert_vm.dart';
+import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/view_models/blog_vm.dart';
 import 'package:hope_nest/views/components/toast_message/toast_message.dart';
+import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class SendPost {
   final _formKey = GlobalKey<FormState>();
   late File postImage;
+  bool file = false;
   Post post =
       Post(url: '', uid: '', id: '', date: Timestamp.fromDate(DateTime.now()));
 
@@ -26,6 +30,7 @@ class SendPost {
       builder: (context) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
+            final _appUserVM = Provider.of<AppUserVM>(context);
             return AlertDialog(
               title: const Text("Advert"),
               content: SingleChildScrollView(
@@ -69,9 +74,12 @@ class SendPost {
                       const SizedBox(
                         height: 10,
                       ),
+                      file == true ? Image.file(postImage):const SizedBox(),
                       TextButton(
                         onPressed: () async {
                           postImage = await PickImage().chooseFile();
+                          file= true;
+                          _appUserVM.state = AppState.IDLE;
                         },
                         child: Icon(Icons.perm_media_outlined),
                       ),

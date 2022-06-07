@@ -3,6 +3,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hope_nest/models/app_user.dart';
+import 'package:hope_nest/util/enum/app_state.dart';
 import 'package:hope_nest/util/methods/pick_image.dart';
 import 'package:hope_nest/view_models/app_user_vm.dart';
 import 'package:hope_nest/views/components/toast_message/toast_message.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 class EditProfile {
   final _formKey = GlobalKey<FormState>();
   late File postImage;
+  bool file = false;
 
   dialog({required BuildContext context, required AppUser appUser}) {
     return showDialog(
@@ -91,6 +93,7 @@ class EditProfile {
                           ),
                           onChanged: (value) {
                             appUser.location = value;
+                            print(appUser.location);
                           },
                           selectedItem: appUser.location),
                       TextFormField(
@@ -113,9 +116,12 @@ class EditProfile {
                           }
                         },
                       ),
+                      file == true ? Image.file(postImage) : const SizedBox(),
                       TextButton(
                         onPressed: () async {
                           postImage = await PickImage().chooseFile();
+                          file = true;
+                          _appUserVM.state = AppState.IDLE;
                         },
                         child: const Icon(Icons.perm_media_outlined),
                       ),
@@ -128,6 +134,11 @@ class EditProfile {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
+                      if (file == true) {
+                        print("deneme12312312312 fil");
+                        appUser.image = await _appUserVM.uploadFile(
+                            uid: appUser.uid, uploadedFile: postImage);
+                      }
                       bool? ret = await _appUserVM.setUser(appUser: appUser);
                       if (ret != null || ret != false) {
                         _appUserVM.currentUser();
