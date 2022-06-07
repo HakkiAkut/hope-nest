@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ? AppBarActionWidget(
                   onPressed: () {
                     _appUserVM.signOut();
-                    Navigator.pop(context);
+                    Navigator.pushNamed(context, NavigationConstants.ROOT);
                   },
                   text: "Log Out")
               : AppBarActionWidget(
