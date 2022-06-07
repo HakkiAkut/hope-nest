@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hope_nest/models/advert.dart';
 import 'package:hope_nest/models/app_user.dart';
@@ -35,117 +36,122 @@ class _ProfilePageState extends State<ProfilePage> {
     final _appUserVM = Provider.of<AppUserVM>(context);
     final chatroomvm = Provider.of<ChatRoomVM>(context);
     AppUser _appUser = widget.userType == UserType.mainUser
-        ? _appUserVM.appUser!
-        : (widget.userType == UserType.postOwner
-            ? _appUserVM.postOwner!
-            : _appUserVM.advertOwner!);
+          ? _appUserVM.appUser!
+          : (widget.userType == UserType.postOwner
+              ? _appUserVM.postOwner!
+              : _appUserVM.advertOwner!);
 
-    return Container(
-      decoration: backgroundStyle,
-      height: DynamicSize.height(context, 1),
-      child: Scaffold(
-        floatingActionButtonLocation: (widget.userType == UserType.mainUser ||
-                _appUser.uid == _appUserVM.appUser!.uid)
-            ? FloatingActionButtonLocation.startFloat
-            : FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: (widget.userType == UserType.mainUser ||
-                _appUser.uid == _appUserVM.appUser!.uid)
-            ? FloatingActionButton(
-                heroTag: "editButton",
-                child: const Icon(
-                  Icons.edit,
-                  color: Palette.BACKGROUND,
-                ),
-                onPressed: () {
-                  EditProfile()
-                      .dialog(context: context, appUser: _appUserVM.appUser!);
-                },
-                backgroundColor: Palette.MAIN_COLOR_BLUE,
-              )
-            : CustomFloatingActionButton(
-                text: "Send Message",
-                onPressed: () async {
-                  //chatroom object
-                  ChatRoom chatroom = ChatRoom(
-                      id: _appUserVM.appUser!.uid + _appUser.uid,
-                      last_message: '',
-                      names: [_appUserVM.appUser!.name, _appUser.name],
-                      users: [_appUser.uid, _appUserVM.appUser!.uid],
-                      time: Timestamp.fromDate(DateTime.now()));
-
-                  bool? x = await chatroomvm.setChatRoom(chatroom: chatroom);
-                  print(x);
-                  if (x != null && x) {
-                    print("OPENCHATROOM");
-                    Navigator.pushNamed(context, NavigationConstants.MESSAGE,
-                        arguments: chatroom);
-                  }
-
-                  // if true return nav with chatroom
-                }),
-        backgroundColor: Colors.transparent,
-        appBar: CustomAppBar(
-          text: "Return Back",
-          actionWidget: widget.userType == UserType.mainUser
-              ? AppBarActionWidget(
-                  onPressed: () {
-                    _appUserVM.signOut();
-                    Navigator.pushNamed(context, NavigationConstants.ROOT);
-                  },
-                  text: "Log Out")
-              : AppBarActionWidget(
-                  onPressed: () {
-                    Navigator.pushNamed(context, NavigationConstants.REPORT,
-                        arguments: _appUser);
-                  },
-                  text: "report",
-                ),
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-            height: DynamicSize.height(context, 1.3),
-            margin: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                ImageContainer(
-                  url: _appUser.image!,
-                  color: Colors.transparent,
-                  radius: 50,
-                ),
-                Text(
-                    _appUser.name! +
-                        " " +
-                        _appUser.surname! +
-                        ", " +
-                        _appUser.location!,
-                    style: TextStyle(color: Colors.grey.shade500)),
-                SizedBox(height: DynamicSize.height(context, 0.012)),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    _appUser.description!,
-                    style: const TextStyle(fontSize: 14),
+    try {
+      return Container(
+        decoration: backgroundStyle,
+        height: DynamicSize.height(context, 1),
+        child: Scaffold(
+          floatingActionButtonLocation: (widget.userType == UserType.mainUser ||
+                  _appUser.uid == _appUserVM.appUser!.uid)
+              ? FloatingActionButtonLocation.startFloat
+              : FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: (widget.userType == UserType.mainUser ||
+                  _appUser.uid == _appUserVM.appUser!.uid)
+              ? FloatingActionButton(
+                  heroTag: "editButton",
+                  child: const Icon(
+                    Icons.edit,
+                    color: Palette.BACKGROUND,
                   ),
-                ),
-                SizedBox(height: DynamicSize.height(context, 0.015)),
-                Text(
-                  "Adverts",
-                  style: TextStyle(color: Colors.grey.shade500),
-                ),
-                Container(
-                  height: DynamicSize.height(context, 0.8),
-                  child: StreamProvider<List<Advert>>.value(
-                    value: AdvertVM().getAdvertsByUID(uid: _appUser.uid),
-                    initialData: const [],
-                    child: const HomeViewPage(),
-                    updateShouldNotify: (prev, now) => true,
-                  ),
+                  onPressed: () {
+                    EditProfile()
+                        .dialog(context: context, appUser: _appUserVM.appUser!);
+                  },
+                  backgroundColor: Palette.MAIN_COLOR_BLUE,
                 )
-              ],
+              : CustomFloatingActionButton(
+                  text: "Send Message",
+                  onPressed: () async {
+                    //chatroom object
+                    ChatRoom chatroom = ChatRoom(
+                        id: _appUserVM.appUser?.uid ?? "" + _appUser.uid,
+                        last_message: '',
+                        names: [_appUserVM.appUser?.name ?? "", _appUser.name],
+                        users: [_appUser.uid, _appUserVM.appUser!.uid],
+                        time: Timestamp.fromDate(DateTime.now()));
+
+                    bool? x = await chatroomvm.setChatRoom(chatroom: chatroom);
+                    print(x);
+                    if (x != null && x) {
+                      print("OPENCHATROOM");
+                      Navigator.pushNamed(context, NavigationConstants.MESSAGE,
+                          arguments: chatroom);
+                    }
+
+                    // if true return nav with chatroom
+                  }),
+          backgroundColor: Colors.transparent,
+          appBar: CustomAppBar(
+            text: "Return Back",
+            actionWidget: widget.userType == UserType.mainUser
+                ? AppBarActionWidget(
+                    onPressed: () {
+                      _appUserVM.signOut();
+                      Navigator.pop(context);
+                    },
+                    text: "Log Out")
+                : AppBarActionWidget(
+                    onPressed: () {
+                      Navigator.pushNamed(context, NavigationConstants.REPORT,
+                          arguments: _appUser);
+                    },
+                    text: "report",
+                  ),
+          ),
+          body: SingleChildScrollView(
+            child: Container(
+              height: DynamicSize.height(context, 1.3),
+              margin: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  ImageContainer(
+                    url: _appUser.image ?? "",
+                    color: Colors.transparent,
+                    radius: 50,
+                  ),
+                  Text(
+                      _appUser.name ??
+                          "" +
+                              " " +
+                              _appUser.surname! +
+                              ", " +
+                              _appUser.location!,
+                      style: TextStyle(color: Colors.grey.shade500)),
+                  SizedBox(height: DynamicSize.height(context, 0.012)),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      _appUser.description!,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  SizedBox(height: DynamicSize.height(context, 0.015)),
+                  Text(
+                    "Adverts",
+                    style: TextStyle(color: Colors.grey.shade500),
+                  ),
+                  Container(
+                    height: DynamicSize.height(context, 0.8),
+                    child: StreamProvider<List<Advert>>.value(
+                      value: AdvertVM().getAdvertsByUID(uid: _appUser.uid),
+                      initialData: const [],
+                      child: const HomeViewPage(),
+                      updateShouldNotify: (prev, now) => true,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    } catch (e) {
+      return const Scaffold();
+    }
   }
 }

@@ -31,67 +31,74 @@ class _MessagesViewState extends State<PrivMessage_View> {
     Messages message;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.chatroom.names[1]),
-        backgroundColor: Color(0xFF574b90),
-        centerTitle: true,
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          ListView.builder(
-              physics: ScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: _message_vm.length,
-              itemBuilder: (BuildContext context, int index) {
-                return MessageListContainer(message: _message_vm[index]);
-              }),
-          Container(
-            decoration: KmesajContainerDecoration,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: textFieldController,
-                    onChanged: (value) {
-                      changeMessage(value);
+        appBar: AppBar(
+          title: Text(
+              widget.chatroom.names[1] ==
+                  _appUserVM.appUser!.name
+                  ? widget.chatroom.names[0]
+                  :widget.chatroom.names[1],
+              ),
+          backgroundColor: Color(0xFF574b90),
+          centerTitle: true,
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+                child: ListView.builder(
+                    physics: ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _message_vm.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return MessageListContainer(message: _message_vm[index]);
+                    })),
+            Container(
+              decoration: KmesajContainerDecoration,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: textFieldController,
+                      onChanged: (value) {
+                        changeMessage(value);
+                      },
+                      decoration: kMesajTextFieldDecoration,
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () async {
+                      if (msg != '') {
+                        message = Messages(
+                            from: _appUserVM.appUser!.uid,
+                            to: widget.chatroom.users[0] ==
+                                    _appUserVM.appUser!.uid
+                                ? widget.chatroom.users[1]
+                                : widget.chatroom.users[0],
+                            message: msg,
+                            id: _appUserVM.appUser!.uid +
+                                DateTime.now()
+                                    .millisecondsSinceEpoch
+                                    .toString());
+                        message.fromName = _appUserVM.appUser!.name;
+                        await messagevm.setMessage(
+                            cid: widget.chatroom.id, message: message);
+                        print(message.id);
+                        textFieldController.clear();
+                        msg = '';
+                      }
                     },
-                    decoration: kMesajTextFieldDecoration,
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () async {
-                    if (msg != '') {
-                      message = Messages(
-                          from: _appUserVM.appUser!.uid,
-                          to: widget.chatroom.users[0] ==
-                              _appUserVM.appUser!.uid
-                              ? widget.chatroom.users[1]
-                              : widget.chatroom.users[0],
-                          message: msg,
-                          id: _appUserVM.appUser!.uid +
-                              DateTime.now().millisecondsSinceEpoch.toString());
-                      message.fromName = _appUserVM.appUser!.name;
-                      await messagevm.setMessage(
-                          cid: widget.chatroom.id, message: message);
-                      print(message.id);
-                      textFieldController.clear();
-                      msg = '';
-                    }
-                  },
-                  child: const Text(
-                    'SEND',
-                    style: kGonderButtonTextStyle,
-                  ),
-                )
-              ],
+                    child: const Text(
+                      'SEND',
+                      style: kGonderButtonTextStyle,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-        ],
-      )
-    );
+          ],
+        ));
   }
 
   void changeMessage(String val) {

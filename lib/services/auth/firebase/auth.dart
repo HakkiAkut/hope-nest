@@ -44,15 +44,11 @@ class AuthService implements AuthMethods {
   /// Firebase authentication with email and password
   @override
   Future<AppUser?> signInWithEmail({required String email, required String pwd}) async {
-    print("auth çalıştı");
-    try{
       UserCredential credential =
       await _auth.signInWithEmailAndPassword(email: email, password: pwd);
       print("auth bitti");
       return convertUserToAppUser(credential.user);
-    }catch(e){
-      print("hata burada fire");
-    }
+
   }
 
 }

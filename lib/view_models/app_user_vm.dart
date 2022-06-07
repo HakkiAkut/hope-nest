@@ -88,7 +88,11 @@ class AppUserVM
       _appUser = await _repository.signInWithEmail(email: email, pwd: pwd);
       print(_appUser!.uid);
       return _appUser;
-    } finally {
+    }catch(e){
+      state = AppState.IDLE;
+     throw Exception(e.toString());
+    }
+    finally {
       print(_appUser!.uid);
       state = AppState.IDLE;
     }
@@ -121,9 +125,9 @@ class AppUserVM
   Future<bool?> signOut() async {
     try {
       state = AppState.BUSY;
-      _appUser = null;
       return await _repository.signOut();
     } finally {
+      _appUser = null;
       state = AppState.IDLE;
     }
   }
