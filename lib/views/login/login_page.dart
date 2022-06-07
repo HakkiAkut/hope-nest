@@ -170,25 +170,30 @@ class _LoginPageState extends State<LoginPage> {
       child: ElevatedButton(
         style: buttonStyle,
         onPressed: () async {
+          print("works");
           key1.currentState!.validate();
           key2.currentState!.validate();
           if (_appUserVM.loginState == LoginState.SIGNUP) {
+            print("starts validation");
             key3.currentState!.validate();
             key4.currentState!.validate();
             key5.currentState!.validate();
-            key6.currentState!.validate();
+            print(key1.currentState!.isValid);
+            print(key2.currentState!.isValid);
+            print(key3.currentState!.isValid);
+            print(key4.currentState!.isValid);
+            print(key5.currentState!.isValid);
             if (key1.currentState!.isValid &&
                 key2.currentState!.isValid &&
                 key3.currentState!.isValid &&
                 key4.currentState!.isValid &&
-                key5.currentState!.isValid &&
-                key6.currentState!.isValid) {
+                key5.currentState!.isValid ) {
               key1.currentState!.save();
               key2.currentState!.save();
               key3.currentState!.save();
               key4.currentState!.save();
               key5.currentState!.save();
-              key6.currentState!.save();
+              print(_location);
               try {
                 await _appUserVM.signUpWithEmail(
                     email: _email,
@@ -365,7 +370,6 @@ class _LoginPageState extends State<LoginPage> {
       margin:
           EdgeInsets.symmetric(horizontal: DynamicSize.height(context, 0.05)),
       child: DropdownSearch<String>(
-        key: key6,
         showSearchBox: true,
         mode: Mode.MENU,
         showSelectedItems: true,
@@ -373,10 +377,13 @@ class _LoginPageState extends State<LoginPage> {
         dropdownSearchDecoration: loginInputStyle.copyWith(
           hintText: 'Location',
         ),
-        validator: (String? item) {
-          if (item == null) return "location can not be null!";
+        onChanged: (value) { _location = value!;
+        print(_location);
         },
-        onChanged: (value) => _location = value!,
+        onSaved: (value)  {
+          _location = value!;
+          print(_location);
+    },
       ),
     );
   }
