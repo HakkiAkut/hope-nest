@@ -3,14 +3,19 @@ import 'package:hope_nest/models/chatroom.dart';
 import 'package:hope_nest/util/constants/navigation_constants.dart';
 import 'package:hope_nest/util/methods/dynamic_size.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../../../view_models/app_user_vm.dart';
 
 class ChatRoomListContainer extends StatelessWidget {
   final ChatRoom chatRoom;
+
 
   const ChatRoomListContainer({Key? key, required this.chatRoom}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final _appUserVM = Provider.of<AppUserVM>(context);
     return GestureDetector(
         child: Container(
           margin: EdgeInsets.only(bottom: DynamicSize.height(context, 0.036)),
@@ -39,7 +44,11 @@ class ChatRoomListContainer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "${chatRoom.names[1]}",
+                        chatRoom.names[1] ==
+                          _appUserVM.appUser!.name
+                          ? "${chatRoom.names[0]}"
+                          :"${ chatRoom.names[1]}",
+
                         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold ),
                       ),
 
